@@ -35,19 +35,17 @@ export default function GeometricAvatar({ name = "", className = "" }) {
     const shapeIndex = hash % shapes.length;
     const colorIndex = hash % colors.length;
     const gradientId = `grad-${name.replace(/\s/g, '-')}`;
-
     return (
-        <div className={`relative flex items-center justify-center bg-slate-800 rounded-full overflow-hidden ${className}`}>
-            <svg viewBox="0 0 24 24" className="w-full h-full p-3 opacity-90" fill="url(#${gradientId})">
+        <div className={`relative flex items-center justify-center bg-black overflow-hidden ${className}`}>
+            <svg viewBox="0 0 24 24" className="w-full h-full p-2" style={{ imageRendering: 'pixelated' }}>
                 <defs>
-                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="100%">
+                    <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stopColor={colors[colorIndex][0]} />
                         <stop offset="100%" stopColor={colors[colorIndex][1]} />
                     </linearGradient>
                 </defs>
-                <path d={shapes[shapeIndex]} fill={`url(#${gradientId})`} />
+                <path d={shapes[shapeIndex]} fill={`url(#${gradientId})`} stroke="white" strokeWidth="0.5" />
             </svg>
-            <div className="absolute inset-0 bg-white/5 backdrop-blur-[1px] rounded-full" />
         </div>
     );
 }

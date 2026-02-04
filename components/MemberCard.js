@@ -1,42 +1,47 @@
 "use client";
 import { motion } from "framer-motion";
-import { TiltCard } from "./ui/TiltCard";
 import GeometricAvatar from "./ui/GeometricAvatar";
 
 export default function MemberCard({ member, index }) {
     return (
         <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-50px" }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
+            initial={{ opacity: 0, scale: 0.9 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
             className="h-full"
         >
-            <TiltCard className="h-full rounded-3xl bg-slate-900 border border-slate-800 p-8 flex flex-col relative group overflow-hidden">
-                {/* Abstract Background Gradient */}
-                <div className="absolute top-0 right-0 w-[80%] h-[80%] bg-gradient-to-br from-purple-500/10 to-blue-500/10 rounded-full blur-3xl -z-10 translate-x-1/2 -translate-y-1/2 group-hover:bg-purple-500/20 transition-colors duration-500" />
+            <div className="h-full bg-slate-900 border-4 border-green-500 shadow-[8px_8px_0_#000] hover:shadow-[12px_12px_0_#ff00ff] hover:-translate-y-2 transition-all duration-200 p-4 flex flex-col relative group">
+
+                {/* Pixel Corner Decorations */}
+                <div className="absolute top-0 left-0 w-2 h-2 bg-white" />
+                <div className="absolute top-0 right-0 w-2 h-2 bg-white" />
+                <div className="absolute bottom-0 left-0 w-2 h-2 bg-white" />
+                <div className="absolute bottom-0 right-0 w-2 h-2 bg-white" />
 
                 {/* Header */}
-                <div className="flex items-center gap-5 mb-6">
-                    <GeometricAvatar name={member.name} className="w-16 h-16 shrink-0 shadow-lg shadow-purple-500/20 ring-2 ring-white/5" />
-                    <div>
-                        <h3 className="text-xl font-bold text-white group-hover:text-purple-300 transition-colors">{member.name}</h3>
-                        <p className="text-sm font-medium text-purple-400/90 uppercase tracking-wide">{member.role}</p>
+                <div className="flex flex-col items-center text-center mb-6 border-b-2 border-dashed border-gray-700 pb-4">
+                    <div className="w-24 h-24 mb-4 border-4 border-white overflow-hidden bg-black">
+                        <GeometricAvatar name={member.name} className="w-full h-full rounded-none" />
+                    </div>
+                    <h3 className="text-sm md:text-base text-yellow-400 mb-1">{member.name}</h3>
+                    <p className="text-[10px] text-green-400 uppercase">{member.role}</p>
+                </div>
+
+                {/* Bio as "Stats" */}
+                <div className="flex-grow mb-6">
+                    <div className="bg-black p-3 border border-gray-800 font-mono text-[10px] leading-relaxed text-gray-300">
+                        <span className="text-pink-500">BIO:</span> {member.bio}
                     </div>
                 </div>
 
-                {/* Bio */}
-                <div className="flex-grow">
-                    <p className="text-slate-400 text-sm leading-relaxed mb-6 font-light">
-                        {member.bio}
-                    </p>
-
-                    {/* Skills */}
-                    <div className="flex flex-wrap gap-2 mb-8">
+                {/* Skills as Inventory */}
+                <div className="mb-6">
+                    <h4 className="text-[10px] text-blue-400 mb-2 underline decoration-wavy">SKILLS_LOADOUT:</h4>
+                    <div className="flex flex-wrap gap-2">
                         {member.skills.map(skill => (
                             <span
                                 key={skill}
-                                className="text-[10px] uppercase font-bold px-2 py-1 rounded-md bg-slate-800/80 text-slate-400 border border-slate-700/50 group-hover:border-purple-500/30 group-hover:text-slate-300 transition-colors"
+                                className="text-[8px] bg-gray-800 text-white px-2 py-1 border border-gray-600 hover:bg-pink-600 hover:border-pink-300 transition-colors cursor-crosshair"
                             >
                                 {skill}
                             </span>
@@ -45,20 +50,16 @@ export default function MemberCard({ member, index }) {
                 </div>
 
                 {/* Footer */}
-                <div className="mt-auto pt-6 border-t border-slate-800/50">
-                    <a
-                        href={member.portfolio}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center justify-between w-full text-slate-400 hover:text-white transition-colors group/link"
-                    >
-                        <span className="text-xs font-bold uppercase tracking-widest">Portfolio</span>
-                        <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center group-hover/link:bg-purple-500 group-hover/link:text-white transition-all">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
-                        </div>
-                    </a>
-                </div>
-            </TiltCard>
+                <a
+                    href={member.portfolio}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto block w-full py-2 bg-blue-600 text-white text-[10px] text-center border-b-4 border-blue-900 active:border-0 active:mt-[2px] hover:bg-blue-500 transition-none"
+                >
+                    VIEW STATUS
+                </a>
+
+            </div>
         </motion.div>
     );
 }
