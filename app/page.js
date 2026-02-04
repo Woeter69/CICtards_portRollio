@@ -9,7 +9,7 @@ export default function Home() {
       <footer className="py-10 text-center text-gray-600 text-sm border-t border-white/5 bg-slate-950">
         <div className="max-w-7xl mx-auto px-6 flex flex-col items-center">
           <p className="mb-2">© {new Date().getFullYear()} Team Portfolio. All rights reserved.</p>
-          <p className="text-xs">Built with Next.js, Tailwind CSS & Framer Motion</p>
+          <p className="text-xs">me and p diddy had a sneaky-sneaky link</p>
         </div>
       </footer>
     </main>
