@@ -45,7 +45,7 @@ export default function Hero() {
                     onClick={() => document.getElementById('team')?.scrollIntoView({ behavior: 'smooth' })}
                     style={{ boxShadow: '0 0 20px rgba(255, 0, 0, 0.5)' }}
                 >
-                    GROPE ME
+                    KABOOM!!!
                 </motion.button>
             </motion.div>
         </section>
