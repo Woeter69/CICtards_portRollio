@@ -212,23 +212,7 @@ export default function FerrariSpotlight({ member }) {
                             }
                             opacity = Math.max(0, Math.min(1, opacity));
 
-                            const fromX = parseFloat(ann.arrowFrom.x);
-                            const fromY = parseFloat(ann.arrowFrom.y);
-                            const toX = parseFloat(ann.position.x);
-                            const toY = parseFloat(ann.position.y);
-                            const midX = fromX + (toX - fromX) * 0.6;
-
-                            return (
-                                <g key={i} opacity={opacity}>
-                                    <path
-                                        d={`M ${fromX}% ${fromY}% L ${midX}% ${fromY}% L ${midX}% ${toY}% L ${toX}% ${toY}%`}
-                                        stroke={ann.color}
-                                        strokeWidth="2"
-                                        fill="none"
-                                        markerEnd="url(#arrowhead)"
-                                    />
-                                </g>
-                            );
+                            return null; // No arrows in Section 1
                         })}
                     </svg>
 
