@@ -4,7 +4,8 @@ import { useScroll, useSpring, useTransform, motion, useMotionValueEvent } from 
 import Link from "next/link";
 
 const TOTAL_FRAMES = 240;
-const SCROLL_HEIGHT = 5000;
+const HERO_HEIGHT = 1000; // Hero section height
+const SCROLL_HEIGHT = 6000; // Increased for hero + Ferrari
 
 // Section 1: Only ENGINE (strengths) and COCKPIT (skills)
 const annotations = [
@@ -182,7 +183,94 @@ export default function FerrariSpotlight({ member }) {
                 </div>
             )}
 
-            {/* Main Content */}
+            {/* Hero Section - Hamilton */}
+            {isLoaded && (
+                <div className="sticky top-0 left-0 w-full h-screen overflow-hidden" style={{ zIndex: 5 }}>
+                    {/* Light background */}
+                    <div className="absolute inset-0 bg-[rgb(218,213,208)]" />
+
+                    {/* Big "44" text with dark outline - behind everything */}
+                    <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 1 }}>
+                        <h1 className="text-[40vw] font-black select-none"
+                            style={{
+                                WebkitTextStroke: '3px rgb(37,36,35)',
+                                color: 'transparent',
+                                fontFamily: 'var(--font-family-mono)',
+                                lineHeight: 1
+                            }}>
+                            44
+                        </h1>
+                    </div>
+
+                    {/* Hamilton image */}
+                    <motion.div
+                        className="absolute inset-0 flex items-end justify-center"
+                        style={{ zIndex: 2 }}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, delay: 0.3 }}
+                    >
+                        <img
+                            src="/hamilton.png"
+                            alt="Lewis Hamilton"
+                            className="h-[90vh] object-contain"
+                            style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
+                        />
+                    </motion.div>
+
+                    {/* LH Helmet - top right */}
+                    <motion.div
+                        className="absolute top-20 right-20"
+                        style={{ zIndex: 3 }}
+                        initial={{ opacity: 0, rotate: -20, scale: 0.8 }}
+                        animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                        transition={{ duration: 0.8, delay: 0.6 }}
+                    >
+                        <img
+                            src="/lh-helmet.webp"
+                            alt="LH Helmet"
+                            className="w-64 h-64 object-contain"
+                            style={{ filter: 'drop-shadow(0 5px 15px rgba(0,0,0,0.2))' }}
+                        />
+                    </motion.div>
+
+                    {/* Wobbly wave transition - sweeps up from bottom */}
+                    <motion.div
+                        className="absolute bottom-0 left-0 w-full"
+                        style={{
+                            zIndex: 4,
+                            height: '120vh',
+                            transform: `translateY(${Math.max(0, (1 - currentProgress * 3) * 100)}%)`
+                        }}
+                    >
+                        <svg
+                            viewBox="0 0 1200 800"
+                            preserveAspectRatio="none"
+                            className="w-full h-full"
+                        >
+                            <defs>
+                                <linearGradient id="darkGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stopColor="rgb(37,36,35)" stopOpacity="0" />
+                                    <stop offset="30%" stopColor="rgb(37,36,35)" stopOpacity="1" />
+                                </linearGradient>
+                            </defs>
+                            <path
+                                d={`
+                                    M 0,${200 + Math.sin(currentProgress * 10) * 50}
+                                    Q 150,${150 + Math.sin(currentProgress * 12) * 40} 300,${200 + Math.sin(currentProgress * 8) * 60}
+                                    T 600,${200 + Math.sin(currentProgress * 15) * 50}
+                                    T 900,${200 + Math.sin(currentProgress * 11) * 55}
+                                    T 1200,${200 + Math.sin(currentProgress * 9) * 45}
+                                    L 1200,800 L 0,800 Z
+                                `}
+                                fill="url(#darkGradient)"
+                            />
+                        </svg>
+                    </motion.div>
+                </div>
+            )}
+
+            {/* Main Content - Ferrari */}
             {isLoaded && (
                 <div className="relative w-full" style={{ height: `${SCROLL_HEIGHT}px` }}>
                     {/* Sticky Canvas */}
