@@ -171,16 +171,34 @@ export default function FerrariSpotlight({ member }) {
 
     return (
         <div ref={containerRef} className="relative" style={{ height: `${SCROLL_HEIGHT}px`, backgroundColor: 'rgb(37, 36, 35)' }}>
-            <CursorTrail color="#FF2800" isActive={!isHoveringInteractable} />
+            {/* Hero Background Layer - Separate from content to allow Trail in between */}
+            <div className="absolute top-0 left-0 w-full bg-[rgb(218,213,208)]" style={{ height: `${HERO_HEIGHT}px`, zIndex: 0 }} />
 
-            {/* ... Loading Screen ... */}
+            <CursorTrail color="#FF2800" isActive={true} /> {/* z-index 10 inside component */}
 
-            {/* Hero Section - Hamilton */}
+            {/* Loading Screen */}
+            {!isLoaded && (
+                <div className="fixed inset-0 flex flex-col items-center justify-center z-50" style={{ backgroundColor: 'rgb(37, 36, 35)' }}>
+                    <div className="text-6xl font-black text-[#CC0000] mb-4" style={{ fontFamily: 'var(--font-family-mono)', userSelect: 'none' }}>
+                        {loadingProgress}%
+                    </div>
+                    <div className="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
+                        <motion.div
+                            className="h-full bg-[#CC0000]"
+                            initial={{ width: 0 }}
+                            animate={{ width: `${loadingProgress}%` }}
+                        />
+                    </div>
+                    <div className="text-sm text-gray-400 mt-4" style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
+                        LOADING FERRARI SF-26
+                    </div>
+                </div>
+            )}
+
+            {/* Hero Section - Content (Hamilton/Helmet) - z-index 20 to sit ON TOP of trail */}
             {isLoaded && (
-                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px` }}>
+                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px`, zIndex: 20, pointerEvents: 'none' }}>
                     <div className="sticky top-0 left-0 w-full h-screen">
-                        {/* Light background */}
-                        <div className="absolute inset-0 bg-[rgb(218,213,208)]" />
 
                         {/* Big "44" text with dark outline - behind everything */}
                         <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 1 }}>
@@ -208,8 +226,6 @@ export default function FerrariSpotlight({ member }) {
                                 alt="Lewis Hamilton"
                                 className="h-[90vh] object-contain pointer-events-auto" // Reactivate events specifically on image
                                 style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
-                                onMouseEnter={() => setIsHoveringInteractable(true)}
-                                onMouseLeave={() => setIsHoveringInteractable(false)}
                             />
                         </motion.div>
 
@@ -226,12 +242,8 @@ export default function FerrariSpotlight({ member }) {
                                 alt="LH Helmet"
                                 className="w-[105vh] h-[105vh] object-contain drop-shadow-2xl pointer-events-auto" // Reactivate events specifically on image
                                 style={{ transform: 'rotate(0deg)' }}
-                                onMouseEnter={() => setIsHoveringInteractable(true)}
-                                onMouseLeave={() => setIsHoveringInteractable(false)}
                             />
                         </motion.div>
-
-
                     </div>
                 </div>
             )}
