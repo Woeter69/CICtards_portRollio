@@ -229,11 +229,17 @@ export default function FerrariSpotlight({ member }) {
                         {annotations.map((ann, i) => {
                             if (currentProgress < ann.scrollStart || currentProgress > ann.scrollEnd) return null;
 
-                            const opacity = Math.min(
-                                (currentProgress - ann.scrollStart) / 0.03,
-                                (ann.scrollEnd - currentProgress) / 0.03,
-                                1
-                            );
+                            // Better opacity calculation
+                            const fadeInDuration = 0.05;
+                            const fadeOutDuration = 0.05;
+
+                            let opacity = 1;
+                            if (currentProgress < ann.scrollStart + fadeInDuration) {
+                                opacity = (currentProgress - ann.scrollStart) / fadeInDuration;
+                            } else if (currentProgress > ann.scrollEnd - fadeOutDuration) {
+                                opacity = (ann.scrollEnd - currentProgress) / fadeOutDuration;
+                            }
+                            opacity = Math.max(0, Math.min(1, opacity));
 
                             const fromX = parseFloat(ann.arrowFrom.x);
                             const fromY = parseFloat(ann.arrowFrom.y);
@@ -259,11 +265,19 @@ export default function FerrariSpotlight({ member }) {
                     {annotations.map((ann, i) => {
                         if (currentProgress < ann.scrollStart || currentProgress > ann.scrollEnd) return null;
 
-                        const opacity = Math.min(
-                            (currentProgress - ann.scrollStart) / 0.03,
-                            (ann.scrollEnd - currentProgress) / 0.03,
-                            1
-                        );
+                        // Better opacity calculation - full opacity in middle, fade at edges
+                        const fadeInDuration = 0.05; // 5% fade in
+                        const fadeOutDuration = 0.05; // 5% fade out
+
+                        let opacity = 1;
+                        if (currentProgress < ann.scrollStart + fadeInDuration) {
+                            // Fade in from start
+                            opacity = (currentProgress - ann.scrollStart) / fadeInDuration;
+                        } else if (currentProgress > ann.scrollEnd - fadeOutDuration) {
+                            // Fade out at end
+                            opacity = (ann.scrollEnd - currentProgress) / fadeOutDuration;
+                        }
+                        opacity = Math.max(0, Math.min(1, opacity));
 
                         // Calculate inverse colors
                         const bgR = Math.round(37 + (218 - 37) * currentProgress);
