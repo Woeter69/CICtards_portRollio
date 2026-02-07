@@ -185,204 +185,205 @@ export default function FerrariSpotlight({ member }) {
 
             {/* Hero Section - Hamilton */}
             {isLoaded && (
-                <div className="sticky top-0 left-0 w-full h-screen overflow-hidden" style={{ zIndex: 100 }}>
-                    {/* Light background */}
-                    <div className="absolute inset-0 bg-[rgb(218,213,208)]" />
+                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px`, zIndex: 100 }}>
+                    <div className="sticky top-0 left-0 w-full h-screen">
+                        {/* Light background */}
+                        <div className="absolute inset-0 bg-[rgb(218,213,208)]" />
 
-                    {/* Big "44" text with dark outline - behind everything */}
-                    <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 1 }}>
-                        <h1 className="text-[40vw] font-black select-none"
-                            style={{
-                                WebkitTextStroke: '3px rgb(37,36,35)',
-                                color: 'transparent',
-                                fontFamily: 'var(--font-family-mono)',
-                                lineHeight: 1
-                            }}>
-                            44
-                        </h1>
+                        {/* Big "44" text with dark outline - behind everything */}
+                        <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 1 }}>
+                            <h1 className="text-[40vw] font-black select-none"
+                                style={{
+                                    WebkitTextStroke: '3px rgb(37,36,35)',
+                                    color: 'transparent',
+                                    fontFamily: 'var(--font-family-mono)',
+                                    lineHeight: 1
+                                }}>
+                                44
+                            </h1>
+                        </div>
+
+                        {/* Hamilton image */}
+                        <motion.div
+                            className="absolute inset-0 flex items-end justify-center"
+                            style={{ zIndex: 2 }}
+                            initial={{ opacity: 0, y: 50 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 1, delay: 0.3 }}
+                        >
+                            <img
+                                src="/hamilton.png"
+                                alt="Lewis Hamilton"
+                                className="h-[90vh] object-contain"
+                                style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
+                            />
+                        </motion.div>
+
+                        {/* LH Helmet - top right */}
+                        <motion.div
+                            className="absolute top-20 right-20"
+                            style={{ zIndex: 3 }}
+                            initial={{ opacity: 0, rotate: -20, scale: 0.8 }}
+                            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                            transition={{ duration: 0.8, delay: 0.6 }}
+                        >
+                            <img
+                                src="/lh-helmet.webp"
+                                alt="LH Helmet"
+                                className="w-64 h-64 object-contain"
+                                style={{ filter: 'drop-shadow(0 5px 15px rgba(0,0,0,0.2))' }}
+                            />
+                        </motion.div>
+
+
                     </div>
-
-                    {/* Hamilton image */}
-                    <motion.div
-                        className="absolute inset-0 flex items-end justify-center"
-                        style={{ zIndex: 2 }}
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.3 }}
-                    >
-                        <img
-                            src="/hamilton.png"
-                            alt="Lewis Hamilton"
-                            className="h-[90vh] object-contain"
-                            style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
-                        />
-                    </motion.div>
-
-                    {/* LH Helmet - top right */}
-                    <motion.div
-                        className="absolute top-20 right-20"
-                        style={{ zIndex: 3 }}
-                        initial={{ opacity: 0, rotate: -20, scale: 0.8 }}
-                        animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                    >
-                        <img
-                            src="/lh-helmet.webp"
-                            alt="LH Helmet"
-                            className="w-64 h-64 object-contain"
-                            style={{ filter: 'drop-shadow(0 5px 15px rgba(0,0,0,0.2))' }}
-                        />
-                    </motion.div>
-
-
-                </div>
             )}
 
-            {/* Main Content - Ferrari */}
-            {isLoaded && (
-                <div className="relative w-full" style={{ height: `${SCROLL_HEIGHT}px` }}>
-                    {/* Sticky Canvas with fade-in */}
-                    <motion.div
-                        className="sticky top-0 left-0 w-full h-screen"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1.5, ease: "easeInOut" }}
-                    >
-                        <canvas ref={canvasRef} className="w-full h-full" />
-                    </motion.div>
-
-                    {/* SVG Arrows */}
-                    <svg className="sticky top-0 left-0 w-full h-screen pointer-events-none" style={{ zIndex: 10 }}>
-                        <defs>
-                            <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-                                <polygon points="0 0, 6 3, 0 6" fill="#8B4513" />
-                            </marker>
-                        </defs>
-                        {annotations.map((ann, i) => {
-                            if (currentProgress < ann.scrollStart || currentProgress > ann.scrollEnd) return null;
-
-                            // Better opacity calculation
-                            const fadeInDuration = 0.05;
-                            const fadeOutDuration = 0.05;
-
-                            let opacity = 1;
-                            if (currentProgress < ann.scrollStart + fadeInDuration) {
-                                opacity = (currentProgress - ann.scrollStart) / fadeInDuration;
-                            } else if (currentProgress > ann.scrollEnd - fadeOutDuration) {
-                                opacity = (ann.scrollEnd - currentProgress) / fadeOutDuration;
-                            }
-                            opacity = Math.max(0, Math.min(1, opacity));
-
-                            return null; // No arrows in Section 1
-                        })}
-                    </svg>
-
-                    {/* Info Cards - Fixed Position */}
-                    {annotations.map((ann, i) => {
-                        if (currentProgress < ann.scrollStart || currentProgress > ann.scrollEnd) return null;
-
-                        // Better opacity calculation - full opacity in middle, fade at edges
-                        const fadeInDuration = 0.05; // 5% fade in
-                        const fadeOutDuration = 0.05; // 5% fade out
-
-                        let opacity = 1;
-                        if (currentProgress < ann.scrollStart + fadeInDuration) {
-                            // Fade in from start
-                            opacity = (currentProgress - ann.scrollStart) / fadeInDuration;
-                        } else if (currentProgress > ann.scrollEnd - fadeOutDuration) {
-                            // Fade out at end
-                            opacity = (ann.scrollEnd - currentProgress) / fadeOutDuration;
-                        }
-                        opacity = Math.max(0, Math.min(1, opacity));
-
-                        // Calculate inverse colors
-                        const bgR = Math.round(37 + (218 - 37) * currentProgress);
-                        const bgG = Math.round(36 + (213 - 36) * currentProgress);
-                        const bgB = Math.round(35 + (208 - 35) * currentProgress);
-
-                        const cardBgR = 255 - bgR;
-                        const cardBgG = 255 - bgG;
-                        const cardBgB = 255 - bgB;
-
-                        const cardTextR = bgR;
-                        const cardTextG = bgG;
-                        const cardTextB = bgB;
-
-                        return (
+                    {/* Main Content - Ferrari */}
+                    {isLoaded && (
+                        <div className="relative w-full" style={{ height: `${SCROLL_HEIGHT}px` }}>
+                            {/* Sticky Canvas with fade-in */}
                             <motion.div
-                                key={i}
-                                className="fixed p-4 rounded-lg shadow-2xl max-w-sm"
+                                className="sticky top-0 left-0 w-full h-screen"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 1.5, ease: "easeInOut" }}
+                            >
+                                <canvas ref={canvasRef} className="w-full h-full" />
+                            </motion.div>
+
+                            {/* SVG Arrows */}
+                            <svg className="sticky top-0 left-0 w-full h-screen pointer-events-none" style={{ zIndex: 10 }}>
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+                                        <polygon points="0 0, 6 3, 0 6" fill="#8B4513" />
+                                    </marker>
+                                </defs>
+                                {annotations.map((ann, i) => {
+                                    if (currentProgress < ann.scrollStart || currentProgress > ann.scrollEnd) return null;
+
+                                    // Better opacity calculation
+                                    const fadeInDuration = 0.05;
+                                    const fadeOutDuration = 0.05;
+
+                                    let opacity = 1;
+                                    if (currentProgress < ann.scrollStart + fadeInDuration) {
+                                        opacity = (currentProgress - ann.scrollStart) / fadeInDuration;
+                                    } else if (currentProgress > ann.scrollEnd - fadeOutDuration) {
+                                        opacity = (ann.scrollEnd - currentProgress) / fadeOutDuration;
+                                    }
+                                    opacity = Math.max(0, Math.min(1, opacity));
+
+                                    return null; // No arrows in Section 1
+                                })}
+                            </svg>
+
+                            {/* Info Cards - Fixed Position */}
+                            {annotations.map((ann, i) => {
+                                if (currentProgress < ann.scrollStart || currentProgress > ann.scrollEnd) return null;
+
+                                // Better opacity calculation - full opacity in middle, fade at edges
+                                const fadeInDuration = 0.05; // 5% fade in
+                                const fadeOutDuration = 0.05; // 5% fade out
+
+                                let opacity = 1;
+                                if (currentProgress < ann.scrollStart + fadeInDuration) {
+                                    // Fade in from start
+                                    opacity = (currentProgress - ann.scrollStart) / fadeInDuration;
+                                } else if (currentProgress > ann.scrollEnd - fadeOutDuration) {
+                                    // Fade out at end
+                                    opacity = (ann.scrollEnd - currentProgress) / fadeOutDuration;
+                                }
+                                opacity = Math.max(0, Math.min(1, opacity));
+
+                                // Calculate inverse colors
+                                const bgR = Math.round(37 + (218 - 37) * currentProgress);
+                                const bgG = Math.round(36 + (213 - 36) * currentProgress);
+                                const bgB = Math.round(35 + (208 - 35) * currentProgress);
+
+                                const cardBgR = 255 - bgR;
+                                const cardBgG = 255 - bgG;
+                                const cardBgB = 255 - bgB;
+
+                                const cardTextR = bgR;
+                                const cardTextG = bgG;
+                                const cardTextB = bgB;
+
+                                return (
+                                    <motion.div
+                                        key={i}
+                                        className="fixed p-4 rounded-lg shadow-2xl max-w-sm"
+                                        style={{
+                                            left: ann.position.x,
+                                            top: ann.position.y,
+                                            opacity,
+                                            zIndex: 20,
+                                            backgroundColor: `rgba(${cardBgR}, ${cardBgG}, ${cardBgB}, 1.0)`,
+                                            borderColor: ann.color,
+                                            borderWidth: '2px',
+                                            borderStyle: 'solid',
+                                            fontFamily: 'var(--font-family-mono)',
+                                            fontSize: 'var(--font-size)',
+                                            userSelect: 'none'
+                                        }}
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        animate={{ scale: 1, opacity }}
+                                        transition={{ duration: 0.3 }}
+                                    >
+                                        <h3 className="font-bold mb-2"
+                                            style={{
+                                                fontFamily: 'var(--font-family-mono)',
+                                                fontSize: '13px',
+                                                color: ann.color,
+                                                letterSpacing: '0.5px'
+                                            }}>
+                                            {ann.title}
+                                        </h3>
+                                        <p className="leading-relaxed"
+                                            style={{
+                                                fontFamily: 'var(--font-family-mono)',
+                                                fontSize: 'var(--font-size)',
+                                                color: `rgb(${cardTextR}, ${cardTextG}, ${cardTextB})`,
+                                                lineHeight: '1.4'
+                                            }}>
+                                            {ann.description}
+                                        </p>
+                                    </motion.div>
+                                );
+                            })}
+
+                            {/* Footer Links */}
+                            <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-30">
+                                <Link href="/#team">
+                                    <div className="px-4 py-2 bg-[#1f1f1f] text-[#ebebeb] font-bold border border-[#424242] hover:bg-[#4f4f4f] transition-all cursor-pointer shadow-lg"
+                                        style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
+                                        ← BACK TO TEAM
+                                    </div>
+                                </Link>
+                                <a href="https://github.com/pranjul" target="_blank" rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-[#424242] text-[#ebebeb] font-bold border border-[#595959] hover:bg-[#595959] transition-all shadow-lg"
+                                    style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
+                                    GITHUB →
+                                </a>
+                            </div>
+
+                            {/* Scroll Indicator */}
+                            <motion.div
+                                className="absolute top-1/2 right-8 z-30"
                                 style={{
-                                    left: ann.position.x,
-                                    top: ann.position.y,
-                                    opacity,
-                                    zIndex: 20,
-                                    backgroundColor: `rgba(${cardBgR}, ${cardBgG}, ${cardBgB}, 1.0)`,
-                                    borderColor: ann.color,
-                                    borderWidth: '2px',
-                                    borderStyle: 'solid',
                                     fontFamily: 'var(--font-family-mono)',
                                     fontSize: 'var(--font-size)',
+                                    color: '#ebebeb',
+                                    opacity: 0.6,
                                     userSelect: 'none'
                                 }}
-                                initial={{ scale: 0.8, opacity: 0 }}
-                                animate={{ scale: 1, opacity }}
-                                transition={{ duration: 0.3 }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: currentProgress < 0.1 ? 0.6 : 0 }}
                             >
-                                <h3 className="font-bold mb-2"
-                                    style={{
-                                        fontFamily: 'var(--font-family-mono)',
-                                        fontSize: '13px',
-                                        color: ann.color,
-                                        letterSpacing: '0.5px'
-                                    }}>
-                                    {ann.title}
-                                </h3>
-                                <p className="leading-relaxed"
-                                    style={{
-                                        fontFamily: 'var(--font-family-mono)',
-                                        fontSize: 'var(--font-size)',
-                                        color: `rgb(${cardTextR}, ${cardTextG}, ${cardTextB})`,
-                                        lineHeight: '1.4'
-                                    }}>
-                                    {ann.description}
-                                </p>
+                                SCROLL ↓
                             </motion.div>
-                        );
-                    })}
-
-                    {/* Footer Links */}
-                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-30">
-                        <Link href="/#team">
-                            <div className="px-4 py-2 bg-[#1f1f1f] text-[#ebebeb] font-bold border border-[#424242] hover:bg-[#4f4f4f] transition-all cursor-pointer shadow-lg"
-                                style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
-                                ← BACK TO TEAM
-                            </div>
-                        </Link>
-                        <a href="https://github.com/pranjul" target="_blank" rel="noopener noreferrer"
-                            className="px-4 py-2 bg-[#424242] text-[#ebebeb] font-bold border border-[#595959] hover:bg-[#595959] transition-all shadow-lg"
-                            style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
-                            GITHUB →
-                        </a>
-                    </div>
-
-                    {/* Scroll Indicator */}
-                    <motion.div
-                        className="absolute top-1/2 right-8 z-30"
-                        style={{
-                            fontFamily: 'var(--font-family-mono)',
-                            fontSize: 'var(--font-size)',
-                            color: '#ebebeb',
-                            opacity: 0.6,
-                            userSelect: 'none'
-                        }}
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: currentProgress < 0.1 ? 0.6 : 0 }}
-                    >
-                        SCROLL ↓
-                    </motion.div>
+                        </div>
+                    )}
                 </div>
-            )}
-        </div>
-    );
+            );
 }
