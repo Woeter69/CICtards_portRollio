@@ -224,9 +224,9 @@ export default function FerrariSpotlight({ member }) {
                             />
                         </motion.div>
 
-                        {/* LH Helmet - covers face */}
+                        {/* LH Helmet - massive scale */}
                         <motion.div
-                            className="absolute inset-0 flex items-start justify-center pt-[10vh]"
+                            className="absolute inset-0 flex items-start justify-center pt-[5vh]"
                             style={{ zIndex: 4 }}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -235,7 +235,7 @@ export default function FerrariSpotlight({ member }) {
                             <img
                                 src="/LH_2025_helmet-1-removebg-preview.png"
                                 alt="LH Helmet"
-                                className="w-[45vh] h-[45vh] object-contain drop-shadow-2xl"
+                                className="w-[100vh] h-[100vh] object-contain drop-shadow-2xl"
                                 style={{ transform: 'rotate(-2deg)' }}
                             />
                         </motion.div>
