@@ -266,7 +266,7 @@ export default function FerrariSpotlight({ member }) {
                         return (
                             <motion.div
                                 key={i}
-                                className="absolute p-3 rounded shadow-2xl max-w-sm"
+                                className="fixed p-4 rounded-lg shadow-2xl max-w-sm"
                                 style={{
                                     left: ann.position.x,
                                     top: ann.position.y,
