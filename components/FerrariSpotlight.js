@@ -7,60 +7,52 @@ const TOTAL_FRAMES = 240;
 const SCROLL_HEIGHT = 5000;
 
 // Contextual annotations based on Ferrari parts being revealed
+// Frame 1 starts with ENGINE, so map accordingly
 const annotations = [
     {
-        scrollStart: 0.05,
-        scrollEnd: 0.15,
-        title: "LEAD ARCHITECT",
-        description: "Visionary leader driving autonomous systems and robotics innovation",
-        position: { x: "70%", y: "15%" },
-        arrowFrom: { x: "50%", y: "30%" }, // Front of car
+        scrollStart: 0.0,
+        scrollEnd: 0.2,
+        title: "ENGINE: CORE STRENGTH",
+        description: "Full-stack development • System architecture • Backend mastery",
+        position: { x: "15%", y: "35%" },
+        arrowFrom: { x: "50%", y: "50%" }, // Engine center
         color: "#CC0000"
     },
     {
         scrollStart: 0.2,
-        scrollEnd: 0.35,
-        title: "ENGINE: CORE STRENGTH",
-        description: "Full-stack development • Algorithm design • System architecture",
-        position: { x: "15%", y: "40%" },
-        arrowFrom: { x: "45%", y: "50%" }, // Engine area
-        color: "#8B4513"
-    },
-    {
-        scrollStart: 0.35,
-        scrollEnd: 0.5,
+        scrollEnd: 0.4,
         title: "POWERTRAIN: PERFORMANCE",
-        description: "Optimizing from O(n) to O(log n) • Scalable microservices • Cloud-native",
-        position: { x: "75%", y: "35%" },
-        arrowFrom: { x: "55%", y: "55%" }, // Transmission
-        color: "#CC0000"
-    },
-    {
-        scrollStart: 0.5,
-        scrollEnd: 0.65,
-        title: "COCKPIT: UI/UX PRECISION",
-        description: "Pixel-perfect interfaces • Component architecture • Design systems",
-        position: { x: "10%", y: "60%" },
-        arrowFrom: { x: "48%", y: "45%" }, // Cockpit
+        description: "Algorithm optimization • Scalable microservices • Cloud-native",
+        position: { x: "75%", y: "30%" },
+        arrowFrom: { x: "55%", y: "55%" }, // Transmission area
         color: "#8B4513"
     },
     {
-        scrollStart: 0.65,
-        scrollEnd: 0.8,
-        title: "CHASSIS: FOUNDATION",
-        description: "React • Next.js • TypeScript • Modern web frameworks",
-        position: { x: "70%", y: "70%" },
-        arrowFrom: { x: "50%", y: "60%" }, // Chassis
+        scrollStart: 0.4,
+        scrollEnd: 0.6,
+        title: "COCKPIT: SKILLS & EXPERTISE",
+        description: "React • Next.js • TypeScript • Modern frameworks • UI/UX design",
+        position: { x: "10%", y: "55%" },
+        arrowFrom: { x: "45%", y: "40%" }, // Cockpit/steering
         color: "#CC0000"
     },
     {
-        scrollStart: 0.8,
+        scrollStart: 0.6,
+        scrollEnd: 0.75,
+        title: "CHASSIS: FOUNDATION",
+        description: "Solid architecture • Component design • Reusable systems",
+        position: { x: "70%", y: "65%" },
+        arrowFrom: { x: "50%", y: "60%" }, // Chassis structure
+        color: "#8B4513"
+    },
+    {
+        scrollStart: 0.75,
         scrollEnd: 0.95,
         title: "AERODYNAMICS: EFFICIENCY",
         description: "Code optimization • Performance tuning • Best practices",
         position: { x: "20%", y: "25%" },
-        arrowFrom: { x: "52%", y: "40%" }, // Wings/aero
-        color: "#8B4513"
+        arrowFrom: { x: "52%", y: "35%" }, // Wings/aero
+        color: "#CC0000"
     }
 ];
 
@@ -124,36 +116,58 @@ export default function FerrariSpotlight({ member }) {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
 
-            // Cream background
-            ctx.fillStyle = '#F5F5DC';
+            // Background color transition: dark to cream as user scrolls
+            const progress = smoothProgress.get();
+            const bgR = Math.round(37 + (218 - 37) * progress);
+            const bgG = Math.round(36 + (213 - 36) * progress);
+            const bgB = Math.round(35 + (208 - 35) * progress);
+            ctx.fillStyle = `rgb(${bgR}, ${bgG}, ${bgB})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Full-page Ferrari (no square confinement)
+            // Calculate zoom based on scroll (start zoomed out, zoom in as you scroll)
+            const zoomFactor = 0.6 + (progress * 0.4); // Start at 60%, zoom to 100%
+
+            // Full-page Ferrari with zoom - COVER mode (no square confinement)
             const imgAspect = img.width / img.height;
             const canvasAspect = canvas.width / canvas.height;
             let drawWidth, drawHeight, offsetX, offsetY;
 
-            // Cover the entire canvas
+            // Cover the entire canvas (like background-size: cover)
             if (imgAspect > canvasAspect) {
-                drawHeight = canvas.height;
-                drawWidth = canvas.height * imgAspect;
+                drawHeight = canvas.height * zoomFactor;
+                drawWidth = (canvas.height * zoomFactor) * imgAspect;
                 offsetX = (canvas.width - drawWidth) / 2;
-                offsetY = 0;
+                offsetY = (canvas.height - drawHeight) / 2;
             } else {
-                drawWidth = canvas.width;
-                drawHeight = canvas.width / imgAspect;
-                offsetX = 0;
+                drawWidth = canvas.width * zoomFactor;
+                drawHeight = (canvas.width * zoomFactor) / imgAspect;
+                offsetX = (canvas.width - drawWidth) / 2;
                 offsetY = (canvas.height - drawHeight) / 2;
             }
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
 
-            // Fog overlay at bottom to hide watermark
-            const gradient = ctx.createLinearGradient(0, canvas.height - 150, 0, canvas.height);
-            gradient.addColorStop(0, 'rgba(245, 245, 220, 0)');
-            gradient.addColorStop(1, 'rgba(245, 245, 220, 0.95)');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, canvas.height - 150, canvas.width, 150);
+            // Enhanced fog overlay around entire Ferrari to hide Veo watermark
+            // Bottom fog
+            const bottomGradient = ctx.createLinearGradient(0, canvas.height - 200, 0, canvas.height);
+            bottomGradient.addColorStop(0, `rgba(${bgR}, ${bgG}, ${bgB}, 0)`);
+            bottomGradient.addColorStop(1, `rgba(${bgR}, ${bgG}, ${bgB}, 0.95)`);
+            ctx.fillStyle = bottomGradient;
+            ctx.fillRect(0, canvas.height - 200, canvas.width, 200);
+
+            // Right edge fog (where Veo logo appears)
+            const rightGradient = ctx.createLinearGradient(canvas.width - 250, 0, canvas.width, 0);
+            rightGradient.addColorStop(0, `rgba(${bgR}, ${bgG}, ${bgB}, 0)`);
+            rightGradient.addColorStop(1, `rgba(${bgR}, ${bgG}, ${bgB}, 0.9)`);
+            ctx.fillStyle = rightGradient;
+            ctx.fillRect(canvas.width - 250, 0, 250, canvas.height);
+
+            // Top fog for balance
+            const topGradient = ctx.createLinearGradient(0, 0, 0, 150);
+            topGradient.addColorStop(0, `rgba(${bgR}, ${bgG}, ${bgB}, 0.7)`);
+            topGradient.addColorStop(1, `rgba(${bgR}, ${bgG}, ${bgB}, 0)`);
+            ctx.fillStyle = topGradient;
+            ctx.fillRect(0, 0, canvas.width, 150);
         };
 
         const unsubscribe = frameIndex.on("change", render);
@@ -166,24 +180,24 @@ export default function FerrariSpotlight({ member }) {
             unsubscribe();
             window.removeEventListener('resize', handleResize);
         };
-    }, [isLoaded, images, frameIndex]);
+    }, [isLoaded, images, frameIndex, smoothProgress]);
 
     return (
-        <div ref={containerRef} className="relative bg-[#F5F5DC]" style={{ height: `${SCROLL_HEIGHT}px` }}>
+        <div ref={containerRef} className="relative" style={{ height: `${SCROLL_HEIGHT}px`, backgroundColor: 'rgb(37, 36, 35)' }}>
             {/* Loading Screen */}
             {!isLoaded && (
-                <div className="fixed inset-0 flex flex-col items-center justify-center bg-[#F5F5DC] z-50">
-                    <div className="text-6xl font-black text-[#8B4513] mb-4" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                <div className="fixed inset-0 flex flex-col items-center justify-center z-50" style={{ backgroundColor: 'rgb(37, 36, 35)' }}>
+                    <div className="text-6xl font-black text-[#CC0000] mb-4" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                         {loadingProgress}%
                     </div>
-                    <div className="w-64 h-2 bg-[#D2B48C] rounded-full overflow-hidden">
+                    <div className="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
                         <motion.div
-                            className="h-full bg-[#8B4513]"
+                            className="h-full bg-[#CC0000]"
                             initial={{ width: 0 }}
                             animate={{ width: `${loadingProgress}%` }}
                         />
                     </div>
-                    <div className="text-sm text-[#8B4513]/60 mt-4" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
+                    <div className="text-sm text-gray-400 mt-4" style={{ fontFamily: 'JetBrains Mono, monospace' }}>
                         LOADING FERRARI SF-26
                     </div>
                 </div>
@@ -192,13 +206,13 @@ export default function FerrariSpotlight({ member }) {
             {/* Scrolling Canvas (not sticky) */}
             {isLoaded && (
                 <div className="relative w-full" style={{ height: `${SCROLL_HEIGHT}px` }}>
-                    {/* Canvas positioned absolutely, scrolls with page */}
-                    <div className="absolute top-0 left-0 w-full h-screen">
+                    {/* Canvas positioned sticky, follows scroll */}
+                    <div className="sticky top-0 left-0 w-full h-screen">
                         <canvas ref={canvasRef} className="w-full h-full" />
                     </div>
 
                     {/* SVG Arrows Layer */}
-                    <svg className="absolute top-0 left-0 w-full h-screen pointer-events-none" style={{ zIndex: 10 }}>
+                    <svg className="sticky top-0 left-0 w-full h-screen pointer-events-none" style={{ zIndex: 10 }}>
                         <defs>
                             <marker
                                 id="arrowhead"
