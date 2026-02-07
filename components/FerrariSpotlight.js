@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useScroll, useSpring, useTransform, motion, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
+import CursorTrail from "./ui/CursorTrail";
 
 const TOTAL_FRAMES = 240;
 const HERO_HEIGHT = 1000; // Hero section height
@@ -169,6 +170,8 @@ export default function FerrariSpotlight({ member }) {
 
     return (
         <div ref={containerRef} className="relative" style={{ height: `${SCROLL_HEIGHT}px`, backgroundColor: 'rgb(37, 36, 35)' }}>
+            <CursorTrail color="#FF2800" />
+
             {/* Loading Screen */}
             {!isLoaded && (
                 <div className="fixed inset-0 flex flex-col items-center justify-center z-50" style={{ backgroundColor: 'rgb(37, 36, 35)' }}>
