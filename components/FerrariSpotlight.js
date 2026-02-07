@@ -10,7 +10,7 @@ const SCROLL_HEIGHT = 5000;
 const annotations = [
     {
         scrollStart: 0.0,
-        scrollEnd: 0.2,
+        scrollEnd: 0.25,
         title: "ENGINE: CORE STRENGTH",
         description: "Full-stack development • System architecture • Backend mastery",
         position: { x: "15%", y: "35%" },
@@ -27,7 +27,7 @@ const annotations = [
         color: "#8B4513"
     },
     {
-        scrollStart: 0.4,
+        scrollStart: 0.35,
         scrollEnd: 0.6,
         title: "COCKPIT: SKILLS & EXPERTISE",
         description: "React • Next.js • TypeScript • Modern frameworks • UI/UX design",
@@ -36,7 +36,7 @@ const annotations = [
         color: "#CC0000"
     },
     {
-        scrollStart: 0.6,
+        scrollStart: 0.55,
         scrollEnd: 0.75,
         title: "CHASSIS: FOUNDATION",
         description: "Solid architecture • Component design • Reusable systems",
@@ -45,7 +45,7 @@ const annotations = [
         color: "#8B4513"
     },
     {
-        scrollStart: 0.75,
+        scrollStart: 0.7,
         scrollEnd: 0.95,
         title: "AERODYNAMICS: EFFICIENCY",
         description: "Code optimization • Performance tuning • Best practices",
@@ -145,25 +145,29 @@ export default function FerrariSpotlight({ member }) {
 
             ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
 
-            // Fog overlay to hide Veo watermark
+            // Fog overlay to hide Veo watermark - ALWAYS DARK
+            const fogR = 37;
+            const fogG = 36;
+            const fogB = 35;
+
             // Bottom fog
             const bottomGradient = ctx.createLinearGradient(0, canvas.height - 200, 0, canvas.height);
-            bottomGradient.addColorStop(0, `rgba(${bgR}, ${bgG}, ${bgB}, 0)`);
-            bottomGradient.addColorStop(1, `rgba(${bgR}, ${bgG}, ${bgB}, 0.95)`);
+            bottomGradient.addColorStop(0, `rgba(${fogR}, ${fogG}, ${fogB}, 0)`);
+            bottomGradient.addColorStop(1, `rgba(${fogR}, ${fogG}, ${fogB}, 0.95)`);
             ctx.fillStyle = bottomGradient;
             ctx.fillRect(0, canvas.height - 200, canvas.width, 200);
 
             // Right edge fog
             const rightGradient = ctx.createLinearGradient(canvas.width - 250, 0, canvas.width, 0);
-            rightGradient.addColorStop(0, `rgba(${bgR}, ${bgG}, ${bgB}, 0)`);
-            rightGradient.addColorStop(1, `rgba(${bgR}, ${bgG}, ${bgB}, 0.9)`);
+            rightGradient.addColorStop(0, `rgba(${fogR}, ${fogG}, ${fogB}, 0)`);
+            rightGradient.addColorStop(1, `rgba(${fogR}, ${fogG}, ${fogB}, 0.9)`);
             ctx.fillStyle = rightGradient;
             ctx.fillRect(canvas.width - 250, 0, 250, canvas.height);
 
             // Top fog
             const topGradient = ctx.createLinearGradient(0, 0, 0, 150);
-            topGradient.addColorStop(0, `rgba(${bgR}, ${bgG}, ${bgB}, 0.7)`);
-            topGradient.addColorStop(1, `rgba(${bgR}, ${bgG}, ${bgB}, 0)`);
+            topGradient.addColorStop(0, `rgba(${fogR}, ${fogG}, ${fogB}, 0.7)`);
+            topGradient.addColorStop(1, `rgba(${fogR}, ${fogG}, ${fogB}, 0)`);
             ctx.fillStyle = topGradient;
             ctx.fillRect(0, 0, canvas.width, 150);
         };
