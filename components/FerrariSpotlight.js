@@ -35,6 +35,7 @@ export default function FerrariSpotlight({ member }) {
     const [loadingProgress, setLoadingProgress] = useState(0);
     const [isLoaded, setIsLoaded] = useState(false);
     const [currentProgress, setCurrentProgress] = useState(0);
+    const [isHoveringInteractable, setIsHoveringInteractable] = useState(false);
 
     const { scrollYProgress } = useScroll({
         target: containerRef,
@@ -170,7 +171,7 @@ export default function FerrariSpotlight({ member }) {
 
     return (
         <div ref={containerRef} className="relative" style={{ height: `${SCROLL_HEIGHT}px`, backgroundColor: 'rgb(37, 36, 35)' }}>
-            <CursorTrail color="#FF2800" />
+            <CursorTrail color="#FF2800" isActive={!isHoveringInteractable} />
 
             {/* Loading Screen */}
             {!isLoaded && (
@@ -218,6 +219,8 @@ export default function FerrariSpotlight({ member }) {
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1, delay: 0.3 }}
+                            onMouseEnter={() => setIsHoveringInteractable(true)}
+                            onMouseLeave={() => setIsHoveringInteractable(false)}
                         >
                             <img
                                 src="/hamilton.png"
@@ -234,6 +237,8 @@ export default function FerrariSpotlight({ member }) {
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.8, type: "spring" }}
+                            onMouseEnter={() => setIsHoveringInteractable(true)}
+                            onMouseLeave={() => setIsHoveringInteractable(false)}
                         >
                             <img
                                 src="/LH_2025_helmet-1-removebg-preview.png"
