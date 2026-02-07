@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { useScroll, useSpring, useTransform, motion, useMotionValueEvent } from "framer-motion";
 import Link from "next/link";
 import CursorTrail from "./ui/CursorTrail";
+import ScratchRevealImage from "./ui/ScratchRevealImage";
 
 const TOTAL_FRAMES = 240;
 const HERO_HEIGHT = 1000; // Hero section height

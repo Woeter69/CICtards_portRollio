@@ -13,8 +13,10 @@ export default function ScratchRevealImage({
     const canvasRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const imageRef = useRef(null);
+    const scratchPointsRef = useRef([]); // Store scratch points:{x, y, age}
+    const animationFrameRef = useRef(null);
 
-    // Initial draw
+    // Initial load
     useEffect(() => {
         const img = new Image();
         img.src = src;
@@ -23,28 +25,42 @@ export default function ScratchRevealImage({
 
         img.onload = () => {
             setIsLoaded(true);
-            drawCanvas();
+            // Start the loop once loaded
+            startLoop();
         };
-    }, [src, width, height]);
 
-    const drawCanvas = () => {
+        return () => {
+            if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+        };
+    }, [src]);
+
+    const startLoop = () => {
+        if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
+
+        const loop = () => {
+            drawFrame();
+            animationFrameRef.current = requestAnimationFrame(loop);
+        };
+        loop();
+    };
+
+    const drawFrame = () => {
         const canvas = canvasRef.current;
         if (!canvas || !imageRef.current) return;
 
         const ctx = canvas.getContext("2d");
 
-        // Match canvas size to display size for crisp rendering
-        // but respect the aspect ratio of the image or container
-        canvas.width = canvas.offsetWidth;
-        canvas.height = canvas.offsetHeight;
+        // Ensure canvas size matches display
+        if (canvas.width !== canvas.offsetWidth || canvas.height !== canvas.offsetHeight) {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        }
 
-        // Draw image initially
-        // We use 'source-over' to draw the image normally
+        // 1. Clear everything
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // 2. Draw the base image (The Helmet)
         ctx.globalCompositeOperation = "source-over";
-
-        // Draw image to cover or contain based on props? 
-        // For this specific use case (helmet), we want it to behave like object-contain
-        // We'll calculate the aspect ratio fit manually
 
         const img = imageRef.current;
         const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
@@ -52,36 +68,37 @@ export default function ScratchRevealImage({
         const y = (canvas.height / 2) - (img.height / 2) * scale;
 
         ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+
+        // 3. Update scratch points (age them)
+        // Filter out dead points (age > 25, slightly longer than trail for nice effect)
+        scratchPointsRef.current = scratchPointsRef.current.filter(p => p.age < 25);
+        scratchPointsRef.current.forEach(p => p.age++);
+
+        // 4. Draw erasers for active points
+        if (scratchPointsRef.current.length > 0) {
+            ctx.globalCompositeOperation = "destination-out";
+
+            scratchPointsRef.current.forEach(point => {
+                ctx.beginPath();
+                // Radius can shrink slightly as it dies for smoother heal? Or keep constant.
+                // improved: Shrink slightly at end of life for "closing up" effect
+                const radius = point.age > 20 ? (25 - point.age) * 8 : 40;
+                ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
     };
-
-    // Handle resize
-    useEffect(() => {
-        const handleResize = () => {
-            // Re-drawing on resize resets the scratch progress, which is usually acceptable 
-            // or we'd need a more complex offscreen canvas state.
-            // For now, simple redraw is safer.
-            drawCanvas();
-        };
-
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, [isLoaded]);
 
     const handleMouseMove = (e) => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
-        const ctx = canvas.getContext("2d");
         const rect = canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        // "Erase" mode
-        ctx.globalCompositeOperation = "destination-out";
-
-        ctx.beginPath();
-        ctx.arc(x, y, 40, 0, Math.PI * 2); // 40px radius brush
-        ctx.fill();
+        // Add new scratch point
+        scratchPointsRef.current.push({ x, y, age: 0 });
 
         if (onScratch) onScratch();
     };
@@ -91,11 +108,8 @@ export default function ScratchRevealImage({
             ref={canvasRef}
             className={className}
             style={{ ...style, touchAction: "none" }}
-            width={width} // Intrinsic width if needed
-            height={height} // Intrinsic height if needed
             onMouseMove={handleMouseMove}
             onTouchMove={(e) => {
-                // Handle touch as well
                 const touch = e.touches[0];
                 handleMouseMove({ clientX: touch.clientX, clientY: touch.clientY });
             }}
