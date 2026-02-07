@@ -195,59 +195,61 @@ export default function FerrariSpotlight({ member }) {
                 </div>
             )}
 
-            {/* Hero Section - Content (Hamilton/Helmet) - z-index 20 to sit ON TOP of trail */}
+            {/* Hero Section - Content (Split layers for Trail to sit in between) */}
             {isLoaded && (
-                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px`, zIndex: 20, pointerEvents: 'none' }}>
-                    <div className="sticky top-0 left-0 w-full h-screen">
+                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px`, pointerEvents: 'none' }}> {/* Removed z-index to allow internal stacking */}
 
-                        {/* Big "44" text with dark outline - behind everything */}
-                        <div className="absolute inset-0 flex items-center justify-center" style={{ zIndex: 1 }}>
-                            <h1 className="text-[40vw] font-black select-none"
-                                style={{
-                                    WebkitTextStroke: '3px rgb(37,36,35)',
-                                    color: 'transparent',
-                                    fontFamily: 'var(--font-family-mono)',
-                                    lineHeight: 1
-                                }}>
-                                44
-                            </h1>
+                    {/* Layer 1: "44" Text (z-5) - Below Trail */}
+                    <div className="sticky top-0 left-0 w-full h-screen flex items-center justify-center" style={{ zIndex: 5 }}>
+                        <h1 className="text-[40vw] font-black select-none"
+                            style={{
+                                WebkitTextStroke: '3px rgb(37,36,35)',
+                                color: 'transparent',
+                                fontFamily: 'var(--font-family-mono)',
+                                lineHeight: 1
+                            }}>
+                            44
+                        </h1>
+                    </div>
+
+                    {/* Layer 2: Hamilton & Helmet (z-20) - Above Trail (Eraser Effect) */}
+                    <div className="absolute top-0 left-0 w-full h-full"> {/* Absolute wrapper to overlay exactly */}
+                        <div className="sticky top-0 left-0 w-full h-screen">
+                            {/* Hamilton image */}
+                            <motion.div
+                                className="absolute inset-0 flex items-end justify-center pointer-events-none"
+                                style={{ zIndex: 20 }}
+                                initial={{ opacity: 0, y: 50 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 1, delay: 0.3 }}
+                            >
+                                <img
+                                    src="/hamilton.png"
+                                    alt="Lewis Hamilton"
+                                    className="h-[90vh] object-contain pointer-events-auto"
+                                    style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
+                                />
+                            </motion.div>
+
+                            {/* LH Helmet */}
+                            <motion.div
+                                className="absolute inset-0 flex items-start justify-center -mt-[10vh] pointer-events-none"
+                                style={{ zIndex: 20 }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ duration: 0.8, delay: 0.8, type: "spring" }}
+                            >
+                                <img
+                                    src="/LH_2025_helmet-1-removebg-preview.png"
+                                    alt="LH Helmet"
+                                    className="w-[105vh] h-[105vh] object-contain drop-shadow-2xl pointer-events-auto"
+                                    style={{ transform: 'rotate(0deg)' }}
+                                />
+                            </motion.div>
                         </div>
-
-                        {/* Hamilton image */}
-                        <motion.div
-                            className="absolute inset-0 flex items-end justify-center pointer-events-none" // Updated with merged classes
-                            style={{ zIndex: 51 }}
-                            initial={{ opacity: 0, y: 50 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.3 }}
-                        >
-                            <img
-                                src="/hamilton.png"
-                                alt="Lewis Hamilton"
-                                className="h-[90vh] object-contain pointer-events-auto" // Reactivate events specifically on image
-                                style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
-                            />
-                        </motion.div>
-
-                        {/* LH Helmet - massive scale (105vh), moved up, straighter */}
-                        <motion.div
-                            className="absolute inset-0 flex items-start justify-center -mt-[10vh] pointer-events-none" // Updated with merged classes
-                            style={{ zIndex: 51 }}
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ duration: 0.8, delay: 0.8, type: "spring" }}
-                        >
-                            <img
-                                src="/LH_2025_helmet-1-removebg-preview.png"
-                                alt="LH Helmet"
-                                className="w-[105vh] h-[105vh] object-contain drop-shadow-2xl pointer-events-auto" // Reactivate events specifically on image
-                                style={{ transform: 'rotate(0deg)' }}
-                            />
-                        </motion.div>
                     </div>
                 </div>
             )}
-
             {/* Main Content - Ferrari */}
             {isLoaded && (
                 <div className="relative w-full" style={{ height: `${SCROLL_HEIGHT}px` }}>
