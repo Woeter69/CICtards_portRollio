@@ -194,7 +194,7 @@ export default function FerrariSpotlight({ member }) {
 
             {/* Hero Section - Hamilton */}
             {isLoaded && (
-                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px`, zIndex: 100 }}>
+                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px` }}> {/* Removed z-index 100 to allow layering */}
                     <div className="sticky top-0 left-0 w-full h-screen">
                         {/* Light background */}
                         <div className="absolute inset-0 bg-[rgb(218,213,208)]" />
@@ -215,12 +215,10 @@ export default function FerrariSpotlight({ member }) {
                         {/* Hamilton image */}
                         <motion.div
                             className="absolute inset-0 flex items-end justify-center"
-                            style={{ zIndex: 2 }}
+                            style={{ zIndex: 51 }}
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1, delay: 0.3 }}
-                            onMouseEnter={() => setIsHoveringInteractable(true)}
-                            onMouseLeave={() => setIsHoveringInteractable(false)}
                         >
                             <img
                                 src="/hamilton.png"
@@ -233,12 +231,10 @@ export default function FerrariSpotlight({ member }) {
                         {/* LH Helmet - massive scale (105vh), moved up, straighter */}
                         <motion.div
                             className="absolute inset-0 flex items-start justify-center -mt-[10vh]"
-                            style={{ zIndex: 4 }}
+                            style={{ zIndex: 51 }}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.8, type: "spring" }}
-                            onMouseEnter={() => setIsHoveringInteractable(true)}
-                            onMouseLeave={() => setIsHoveringInteractable(false)}
                         >
                             <img
                                 src="/LH_2025_helmet-1-removebg-preview.png"
