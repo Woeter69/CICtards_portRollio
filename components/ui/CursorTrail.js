@@ -44,10 +44,10 @@ export default function CursorTrail({ color = "#FF2800" }) {
                 ctx.lineCap = "square";
                 ctx.lineJoin = "bevel";
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 4;
+                ctx.lineWidth = 8;
                 ctx.shadowColor = color;
-                ctx.shadowBlur = 10; // Glow effect
-                ctx.globalAlpha = 0.4;
+                ctx.shadowBlur = 15; // Glow effect
+                ctx.globalAlpha = 0.5;
                 ctx.stroke();
                 ctx.shadowBlur = 0;
             }
@@ -56,7 +56,7 @@ export default function CursorTrail({ color = "#FF2800" }) {
             pointsRef.current.forEach((point) => {
                 point.age += 1;
                 const life = 1 - point.age / 50;
-                const size = 15 * life; // Much larger pixels
+                const size = 25 * life; // Huge pixels as requested
 
                 ctx.fillStyle = color;
                 ctx.globalAlpha = life * 0.8;
