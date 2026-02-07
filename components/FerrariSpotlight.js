@@ -173,28 +173,11 @@ export default function FerrariSpotlight({ member }) {
         <div ref={containerRef} className="relative" style={{ height: `${SCROLL_HEIGHT}px`, backgroundColor: 'rgb(37, 36, 35)' }}>
             <CursorTrail color="#FF2800" isActive={!isHoveringInteractable} />
 
-            {/* Loading Screen */}
-            {!isLoaded && (
-                <div className="fixed inset-0 flex flex-col items-center justify-center z-50" style={{ backgroundColor: 'rgb(37, 36, 35)' }}>
-                    <div className="text-6xl font-black text-[#CC0000] mb-4" style={{ fontFamily: 'var(--font-family-mono)', userSelect: 'none' }}>
-                        {loadingProgress}%
-                    </div>
-                    <div className="w-64 h-2 bg-gray-700 rounded-full overflow-hidden">
-                        <motion.div
-                            className="h-full bg-[#CC0000]"
-                            initial={{ width: 0 }}
-                            animate={{ width: `${loadingProgress}%` }}
-                        />
-                    </div>
-                    <div className="text-sm text-gray-400 mt-4" style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
-                        LOADING FERRARI SF-26
-                    </div>
-                </div>
-            )}
+            {/* ... Loading Screen ... */}
 
             {/* Hero Section - Hamilton */}
             {isLoaded && (
-                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px` }}> {/* Removed z-index 100 to allow layering */}
+                <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px` }}>
                     <div className="sticky top-0 left-0 w-full h-screen">
                         {/* Light background */}
                         <div className="absolute inset-0 bg-[rgb(218,213,208)]" />
@@ -214,7 +197,7 @@ export default function FerrariSpotlight({ member }) {
 
                         {/* Hamilton image */}
                         <motion.div
-                            className="absolute inset-0 flex items-end justify-center"
+                            className="absolute inset-0 flex items-end justify-center pointer-events-none" // Updated with merged classes
                             style={{ zIndex: 51 }}
                             initial={{ opacity: 0, y: 50 }}
                             animate={{ opacity: 1, y: 0 }}
@@ -223,14 +206,16 @@ export default function FerrariSpotlight({ member }) {
                             <img
                                 src="/hamilton.png"
                                 alt="Lewis Hamilton"
-                                className="h-[90vh] object-contain"
+                                className="h-[90vh] object-contain pointer-events-auto" // Reactivate events specifically on image
                                 style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
+                                onMouseEnter={() => setIsHoveringInteractable(true)}
+                                onMouseLeave={() => setIsHoveringInteractable(false)}
                             />
                         </motion.div>
 
                         {/* LH Helmet - massive scale (105vh), moved up, straighter */}
                         <motion.div
-                            className="absolute inset-0 flex items-start justify-center -mt-[10vh]"
+                            className="absolute inset-0 flex items-start justify-center -mt-[10vh] pointer-events-none" // Updated with merged classes
                             style={{ zIndex: 51 }}
                             initial={{ opacity: 0, scale: 0.8 }}
                             animate={{ opacity: 1, scale: 1 }}
@@ -239,8 +224,10 @@ export default function FerrariSpotlight({ member }) {
                             <img
                                 src="/LH_2025_helmet-1-removebg-preview.png"
                                 alt="LH Helmet"
-                                className="w-[105vh] h-[105vh] object-contain drop-shadow-2xl"
+                                className="w-[105vh] h-[105vh] object-contain drop-shadow-2xl pointer-events-auto" // Reactivate events specifically on image
                                 style={{ transform: 'rotate(0deg)' }}
+                                onMouseEnter={() => setIsHoveringInteractable(true)}
+                                onMouseLeave={() => setIsHoveringInteractable(false)}
                             />
                         </motion.div>
 

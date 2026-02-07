@@ -22,8 +22,10 @@ export default function CursorTrail({ color = "#FF2800", isActive = true }) {
         };
 
         const handleMouseMove = (e) => {
-            // Add new point with age 0
-            pointsRef.current.push({ x: e.clientX, y: e.clientY, age: 0 });
+            // Only add points if active
+            if (isActiveRef.current) {
+                pointsRef.current.push({ x: e.clientX, y: e.clientY, age: 0 });
+            }
         };
 
         window.addEventListener("resize", updateSize);
@@ -36,8 +38,9 @@ export default function CursorTrail({ color = "#FF2800", isActive = true }) {
             // Increment age for ALL points first
             pointsRef.current.forEach(p => p.age += 1);
 
-            // Filter out old points
-            pointsRef.current = pointsRef.current.filter((point) => point.age < 15);
+            // Filter out old points - faster fade if inactive
+            const maxAge = isActiveRef.current ? 15 : 5;
+            pointsRef.current = pointsRef.current.filter((point) => point.age < maxAge);
 
             // Draw the "thread"
             if (pointsRef.current.length > 1) {
@@ -56,7 +59,7 @@ export default function CursorTrail({ color = "#FF2800", isActive = true }) {
                 ctx.lineWidth = 60; // Huge smooth trail as requested
                 ctx.shadowColor = color;
                 ctx.shadowBlur = 30;
-                ctx.globalAlpha = 0.5;
+                ctx.globalAlpha = isActiveRef.current ? 0.5 : 0.1; // Fade out slightly if inactive
                 ctx.stroke();
                 ctx.shadowBlur = 0;
             }
