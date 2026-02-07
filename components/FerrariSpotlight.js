@@ -46,7 +46,12 @@ export default function FerrariSpotlight({ member }) {
         restDelta: 0.001
     });
 
-    const frameIndex = useTransform(smoothProgress, [0, 1], [0, TOTAL_FRAMES - 1]);
+    // START FERRARI ANIMATION AFTER HERO SECTION (1000px / 6000px = ~0.166)
+    const ferrariProgress = useTransform(smoothProgress, [0.166, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.15, 0.25], [0, 1]); // Fade in as hero scrolls away
+
+    // Frames only update once we're past the hero section
+    const frameIndex = useTransform(ferrariProgress, [0, 1], [0, TOTAL_FRAMES - 1]);
 
     // Track progress changes to trigger re-renders
     useMotionValueEvent(smoothProgress, "change", (latest) => {
@@ -243,12 +248,10 @@ export default function FerrariSpotlight({ member }) {
             {/* Main Content - Ferrari */}
             {isLoaded && (
                 <div className="relative w-full" style={{ height: `${SCROLL_HEIGHT}px` }}>
-                    {/* Sticky Canvas with fade-in */}
+                    {/* Sticky Canvas with fade-in tied to scroll */}
                     <motion.div
                         className="sticky top-0 left-0 w-full h-screen"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 1.5, ease: "easeInOut" }}
+                        style={{ opacity: ferrariOpacity }}
                     >
                         <canvas ref={canvasRef} className="w-full h-full" />
                     </motion.div>
