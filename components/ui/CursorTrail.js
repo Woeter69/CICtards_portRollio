@@ -41,27 +41,31 @@ export default function CursorTrail({ color = "#FF2800" }) {
                     ctx.lineTo(point.x, point.y);
                 }
 
-                ctx.lineCap = "square";
-                ctx.lineJoin = "bevel";
+                ctx.lineCap = "round"; // Smoother train
+                ctx.lineJoin = "round";
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 8;
+                ctx.lineWidth = 12; // Thicker smooth trail
                 ctx.shadowColor = color;
-                ctx.shadowBlur = 15; // Glow effect
-                ctx.globalAlpha = 0.5;
+                ctx.shadowBlur = 20;
+                ctx.globalAlpha = 0.6;
                 ctx.stroke();
                 ctx.shadowBlur = 0;
             }
 
-            // Draw "pixels" at each point
+            // Draw "pixels" floating around the trail
             pointsRef.current.forEach((point) => {
                 point.age += 1;
                 const life = 1 - point.age / 50;
-                const size = 25 * life; // Huge pixels as requested
+                const size = 60 * life; // Huge 60px pixels as requested
+
+                // Deterministic random position based on point coordinates to keep it stable but scattered
+                const offsetX = (Math.sin(point.x * 0.1 + point.age * 0.2) * 30 * life);
+                const offsetY = (Math.cos(point.y * 0.1 + point.age * 0.2) * 30 * life);
 
                 ctx.fillStyle = color;
-                ctx.globalAlpha = life * 0.8;
-                // Draw square for pixel look
-                ctx.fillRect(point.x - size / 2, point.y - size / 2, size, size);
+                ctx.globalAlpha = life * 0.4; // Slightly transparent to see through
+                // Draw scattered square
+                ctx.fillRect(point.x + offsetX - size / 2, point.y + offsetY - size / 2, size, size);
             });
 
             animationFrameId = requestAnimationFrame(animate);
