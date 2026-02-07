@@ -335,39 +335,40 @@ export default function FerrariSpotlight({ member }) {
                                 </motion.div>
                             );
                         })}
-
-                        {/* Footer Links */}
-                        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-30">
-                            <Link href="/#team">
-                                <div className="px-4 py-2 bg-[#1f1f1f] text-[#ebebeb] font-bold border border-[#424242] hover:bg-[#4f4f4f] transition-all cursor-pointer shadow-lg"
-                                    style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
-                                    ← BACK TO TEAM
-                                </div>
-                            </Link>
-                            <a href="https://github.com/pranjul" target="_blank" rel="noopener noreferrer"
-                                className="px-4 py-2 bg-[#424242] text-[#ebebeb] font-bold border border-[#595959] hover:bg-[#595959] transition-all shadow-lg"
-                                style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
-                                GITHUB →
-                            </a>
-                        </div>
-
-                        {/* Scroll Indicator */}
-                        <motion.div
-                            className="absolute top-1/2 right-8 z-30"
-                            style={{
-                                fontFamily: 'var(--font-family-mono)',
-                                fontSize: 'var(--font-size)',
-                                color: '#ebebeb',
-                                opacity: 0.6,
-                                userSelect: 'none'
-                            }}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: currentProgress < 0.1 ? 0.6 : 0 }}
-                        >
-                            SCROLL ↓
-                        </motion.div>
                     </div>
-            )}
+
+                    {/* Footer Links */}
+                    <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex gap-4 z-30">
+                        <Link href="/#team">
+                            <div className="px-4 py-2 bg-[#1f1f1f] text-[#ebebeb] font-bold border border-[#424242] hover:bg-[#4f4f4f] transition-all cursor-pointer shadow-lg"
+                                style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
+                                ← BACK TO TEAM
+                            </div>
+                        </Link>
+                        <a href="https://github.com/pranjul" target="_blank" rel="noopener noreferrer"
+                            className="px-4 py-2 bg-[#424242] text-[#ebebeb] font-bold border border-[#595959] hover:bg-[#595959] transition-all shadow-lg"
+                            style={{ fontFamily: 'var(--font-family-mono)', fontSize: 'var(--font-size)', userSelect: 'none' }}>
+                            GITHUB →
+                        </a>
+                    </div>
+
+                    {/* Scroll Indicator */}
+                    <motion.div
+                        className="absolute top-1/2 right-8 z-30"
+                        style={{
+                            fontFamily: 'var(--font-family-mono)',
+                            fontSize: 'var(--font-size)',
+                            color: '#ebebeb',
+                            opacity: 0.6,
+                            userSelect: 'none'
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: currentProgress < 0.1 ? 0.6 : 0 }}
+                    >
+                        SCROLL ↓
+                    </motion.div>
                 </div>
-            );
+            )}
+        </div>
+    );
 }
