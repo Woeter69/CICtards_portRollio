@@ -175,7 +175,7 @@ export default function FerrariSpotlight({ member }) {
             {/* Hero Background Layer - Separate from content to allow Trail in between */}
             <div className="absolute top-0 left-0 w-full bg-[rgb(218,213,208)]" style={{ height: `${HERO_HEIGHT}px`, zIndex: 0 }} />
 
-            <CursorTrail color="#FF2800" isActive={true} /> {/* z-index 10 inside component */}
+            <CursorTrail color="#FF2800" isActive={!isHoveringInteractable} /> {/* z-index 10 inside component */}
 
             {/* Loading Screen */}
             {!isLoaded && (
@@ -200,8 +200,8 @@ export default function FerrariSpotlight({ member }) {
             {isLoaded && (
                 <div className="relative w-full overflow-hidden" style={{ height: `${HERO_HEIGHT}px`, pointerEvents: 'none' }}>
 
-                    {/* Layer 1: "44" Text (z-5) - Background decoration */}
-                    <div className="sticky top-0 left-0 w-full h-screen flex items-center justify-center" style={{ zIndex: 5 }}>
+                    {/* Layer 1: "44" Text (z-1) - Background decoration */}
+                    <div className="sticky top-0 left-0 w-full h-screen flex items-center justify-center" style={{ zIndex: 1 }}>
                         <h1 className="text-[40vw] font-black select-none"
                             style={{
                                 WebkitTextStroke: '3px rgb(37,36,35)',
@@ -214,11 +214,11 @@ export default function FerrariSpotlight({ member }) {
                     </div>
 
                     {/* Layer 2: Main Scratch Interaction (z-40) */}
-                    <div className="absolute top-0 left-0 w-full h-full">
+                    <div className="absolute top-0 left-0 w-full h-full" style={{ zIndex: 40, pointerEvents: 'none' }}>
                         <div className="sticky top-0 left-0 w-full h-screen">
                             {/* Hamilton Face (Base Layer) - z-index 40 */}
                             <motion.div
-                                className="absolute inset-0 flex items-end justify-center pointer-events-none"
+                                className="absolute inset-0 flex items-end justify-center pointer-events-auto" // Re-enable interaction
                                 style={{ zIndex: 40 }}
                                 initial={{ opacity: 0, y: 50 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -227,8 +227,10 @@ export default function FerrariSpotlight({ member }) {
                                 <img
                                     src="/hamilton.png"
                                     alt="Lewis Hamilton"
-                                    className="h-[90vh] object-contain pointer-events-none" // Base image is not interactive
+                                    className="h-[90vh] object-contain pointer-events-auto"
                                     style={{ filter: 'drop-shadow(0 10px 30px rgba(0,0,0,0.3))' }}
+                                    onMouseEnter={() => setIsHoveringInteractable(true)}
+                                    onMouseLeave={() => setIsHoveringInteractable(false)}
                                 />
                             </motion.div>
 
@@ -246,6 +248,8 @@ export default function FerrariSpotlight({ member }) {
                                     width={window.innerWidth} // Pass window dimensions for crisp canvas
                                     height={window.innerHeight}
                                     className="w-[105vh] h-[105vh] object-contain drop-shadow-2xl cursor-crosshair"
+                                    onMouseEnter={() => setIsHoveringInteractable(true)}
+                                    onMouseLeave={() => setIsHoveringInteractable(false)}
                                 />
                             </motion.div>
                         </div>
