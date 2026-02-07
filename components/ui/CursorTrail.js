@@ -78,7 +78,7 @@ export default function CursorTrail({ color = "#FF2800", isActive = true }) {
     return (
         <canvas
             ref={canvasRef}
-            className="fixed inset-0 pointer-events-none z-[9999]"
+            className="fixed inset-0 pointer-events-none z-[50]"
         />
     );
 }
