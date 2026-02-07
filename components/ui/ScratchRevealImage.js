@@ -8,7 +8,9 @@ export default function ScratchRevealImage({
     height,
     className,
     style,
-    onScratch
+    onScratch,
+    onMouseEnter,
+    onMouseLeave
 }) {
     const canvasRef = useRef(null);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -70,8 +72,8 @@ export default function ScratchRevealImage({
         ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
         // 3. Update scratch points (age them)
-        // Filter out dead points (Extend lifespan to 180 frames = ~3 seconds)
-        scratchPointsRef.current = scratchPointsRef.current.filter(p => p.age < 180);
+        // Filter out dead points (Extend lifespan to 300 frames = ~5 seconds)
+        scratchPointsRef.current = scratchPointsRef.current.filter(p => p.age < 300);
         scratchPointsRef.current.forEach(p => p.age++);
 
         // 4. Draw erasers for active points
@@ -82,9 +84,9 @@ export default function ScratchRevealImage({
                 ctx.beginPath();
                 // Radius can shrink slightly as it dies for smoother heal? Or keep constant.
                 // improved: Shrink slightly at end of life for "closing up" effect
-                // Start shrinking only in the last 30 frames (after 150)
+                // Start shrinking only in the last 60 frames (after 240)
                 // Base radius increased to 80px (160px diameter) for BIG reveal
-                const radius = point.age > 150 ? (180 - point.age) * (80 / 30) : 80;
+                const radius = point.age > 240 ? (300 - point.age) * (80 / 60) : 80;
                 ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
                 ctx.fill();
             });
@@ -111,6 +113,8 @@ export default function ScratchRevealImage({
             className={className}
             style={{ ...style, touchAction: "none" }}
             onMouseMove={handleMouseMove}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
             onTouchMove={(e) => {
                 const touch = e.touches[0];
                 handleMouseMove({ clientX: touch.clientX, clientY: touch.clientY });
