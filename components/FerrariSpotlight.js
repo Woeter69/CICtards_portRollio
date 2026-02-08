@@ -5,7 +5,7 @@ import Link from "next/link";
 import CursorTrail from "./ui/CursorTrail";
 import ScratchRevealImage from "./ui/ScratchRevealImage";
 
-const TOTAL_FRAMES = 480; // PNG frames (Formula1 + Formula2)
+const TOTAL_FRAMES = 720; // PNG frames (Formula1 + Formula2 + Formula3)
 const FRAME_EXTENSION = 'png'; // Changed from jpg to png
 const HERO_HEIGHT = 1000; // Hero section height
 const SCROLL_HEIGHT = 6000; // Total scrollable height
