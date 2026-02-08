@@ -15,11 +15,11 @@ const shapes = [
 ];
 
 const colors = [
-    ["#ec4899", "#8b5cf6"], // Pink to Purple
-    ["#3b82f6", "#06b6d4"], // Blue to Cyan
-    ["#f59e0b", "#ef4444"], // Amber to Red
-    ["#10b981", "#3b82f6"], // Emerald to Blue
-    ["#8b5cf6", "#ec4899"], // Purple to Pink
+    ["#ff00ff", "#bf00ff"], // Neon Pink to Purple
+    ["#00ffff", "#0000ff"], // Neon Cyan to Blue
+    ["#ffff00", "#ff6600"], // Neon Yellow to Orange
+    ["#39ff14", "#00ffff"], // Neon Green to Cyan
+    ["#bf00ff", "#ff00ff"], // Purple to Pink
 ];
 
 export default function GeometricAvatar({ name = "", className = "" }) {
@@ -36,7 +36,7 @@ export default function GeometricAvatar({ name = "", className = "" }) {
     const colorIndex = hash % colors.length;
     const gradientId = `grad-${name.replace(/\s/g, '-')}`;
     return (
-        <div className={`relative flex items-center justify-center bg-black overflow-hidden ${className}`}>
+        <div className={`relative flex items-center justify-center bg-arcade-bg overflow-hidden ${className}`}>
             <svg viewBox="0 0 24 24" className="w-full h-full p-2" style={{ imageRendering: 'pixelated' }}>
                 <defs>
                     <linearGradient id={gradientId} x1="0%" y1="0%" x2="100%" y2="0%">
@@ -44,7 +44,8 @@ export default function GeometricAvatar({ name = "", className = "" }) {
                         <stop offset="100%" stopColor={colors[colorIndex][1]} />
                     </linearGradient>
                 </defs>
-                <path d={shapes[shapeIndex]} fill={`url(#${gradientId})`} stroke="white" strokeWidth="0.5" />
+                <path d={shapes[shapeIndex]} fill={`url(#${gradientId})`} stroke="var(--color-arcade-text)" strokeWidth="0.5" />
+
             </svg>
         </div>
     );

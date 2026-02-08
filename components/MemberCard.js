@@ -1,7 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
+import GeometricAvatar from "./ui/GeometricAvatar";
 
 export default function MemberCard({ member, index }) {
     return (
@@ -11,109 +11,66 @@ export default function MemberCard({ member, index }) {
             viewport={{ once: true }}
             className="h-full"
         >
-            <div className="h-full flex flex-col bg-black border-2 border-white hover:scale-105 hover:-translate-y-2 transition-all duration-200">
+            <div className="h-full bg-arcade-surface border-4 border-neon-red shadow-[8px_8px_0_#050510] hover:shadow-[12px_12px_0_#ff2a2a] hover:-translate-y-2 transition-all duration-200 p-4 flex flex-col relative group box-glow-red">
 
-                {/* Centered Profile Picture */}
-                <div className="flex justify-center pt-6 pb-4">
-                    <div className="w-24 h-24 rounded-full border-4 border-yellow-400 overflow-hidden bg-gray-800 flex items-center justify-center"
-                        style={{ boxShadow: '0 0 20px rgba(255, 215, 0, 0.5)' }}>
+                {/* Pixel Corner Decorations */}
+                <div className="absolute top-0 left-0 w-2 h-2 bg-neon-red" />
+                <div className="absolute top-0 right-0 w-2 h-2 bg-neon-red" />
+                <div className="absolute bottom-0 left-0 w-2 h-2 bg-neon-red" />
+                <div className="absolute bottom-0 right-0 w-2 h-2 bg-neon-red" />
+
+                {/* Header */}
+                <div className="flex flex-col items-center text-center mb-6 border-b-2 border-dashed border-neon-purple/30 pb-4">
+                    <div className="w-24 h-24 mb-4 border-4 border-white overflow-hidden bg-arcade-bg relative shadow-lg">
                         {member.image ? (
                             <Image
                                 src={member.image}
                                 alt={member.name}
-                                width={96}
-                                height={96}
-                                className="w-full h-full object-cover"
+                                fill
+                                className="object-cover"
+                                sizes="96px"
+                                style={{ imageRendering: 'pixelated' }}
                             />
                         ) : (
-                            <span className="text-4xl text-yellow-400 font-black" style={{ fontFamily: '"Press Start 2P", sans-serif' }}>
-                                {member.name.charAt(0)}
-                            </span>
+                            <GeometricAvatar name={member.name} className="w-full h-full rounded-none" />
                         )}
                     </div>
+                    <h3 className="text-sm md:text-base text-neon-yellow mb-1 font-bold tracking-wide text-glow-yellow">{member.name}</h3>
+                    <p className="text-[10px] text-neon-red uppercase tracking-widest">{member.role}</p>
                 </div>
 
-                {/* Name & Role Box - Outlined Only */}
-                <div className="px-4 pb-3">
-                    <div className="border-4 border-yellow-400 p-3 text-center"
-                        style={{
-                            boxShadow: '4px 4px 0 #ff0000'
-                        }}>
-                        <h2 className="text-sm text-yellow-400 font-black tracking-wider uppercase"
-                            style={{ fontFamily: '"Press Start 2P", sans-serif' }}>
-                            {member.name}
-                        </h2>
-                        <p className="text-[10px] text-red-500 font-bold mt-1"
-                            style={{ fontFamily: '"Press Start 2P", sans-serif' }}>
-                            {member.role}
-                        </p>
+                {/* Bio as "Stats" */}
+                <div className="flex-grow mb-6">
+                    <div className="bg-arcade-bg p-3 border border-neon-purple/20 font-mono text-[10px] leading-relaxed text-arcade-text/80">
+                        <span className="text-neon-pink text-glow-pink">BIO:</span> {member.bio}
                     </div>
                 </div>
 
-                {/* Quote Section - No Label */}
-                {member.quote && (
-                    <div className="px-4 pb-3">
-                        <div className="bg-gradient-to-r from-purple-900 to-pink-900 border-2 border-pink-500 p-3 text-center"
-                            style={{
-                                boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.8)'
-                            }}>
-                            <div className="text-base text-white font-bold italic" style={{ fontFamily: '"Press Start 2P", sans-serif' }}>
-                                "{member.quote}"
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Bio Section */}
-                <div className="px-4 pb-3">
-                    <div className="bg-black border-2 border-green-500 p-2 text-[10px] leading-relaxed text-green-400"
-                        style={{
-                            boxShadow: 'inset 2px 2px 4px rgba(0,0,0,0.8)',
-                            fontFamily: '"Press Start 2P", sans-serif'
-                        }}>
-                        <div className="text-yellow-400 mb-1 text-[8px]">{'>'} BIO:</div>
-                        <div className="text-green-300">{member.bio}</div>
-                    </div>
-                </div>
-
-                {/* Skills Section */}
-                <div className="px-4 pb-4">
-                    <div className="flex items-center gap-2 mb-2 border-b border-yellow-600 pb-1">
-                        <div className="w-2 h-2 bg-yellow-400 animate-pulse" />
-                        <h4 className="text-xs text-yellow-400 font-bold tracking-widest" style={{ fontFamily: '"Press Start 2P", sans-serif' }}>
-                            ABILITIES
-                        </h4>
-                        <div className="w-2 h-2 bg-yellow-400 animate-pulse" />
-                    </div>
-                    <div className="flex flex-wrap gap-1.5">
-                        {member.skills.slice(0, 6).map(skill => (
+                {/* Skills as Inventory */}
+                <div className="mb-6">
+                    <h4 className="text-[10px] text-neon-cyan mb-2 underline decoration-wavy text-glow-cyan">SKILLS_LOADOUT:</h4>
+                    <div className="flex flex-wrap gap-2">
+                        {member.skills.map(skill => (
                             <span
                                 key={skill}
-                                className="text-[8px] bg-red-900 text-yellow-300 px-1.5 py-0.5 border border-yellow-600 hover:bg-yellow-400 hover:text-black transition-all font-bold"
-                                style={{
-                                    fontFamily: '"Press Start 2P", sans-serif',
-                                    boxShadow: '1px 1px 0 #000'
-                                }}
+                                className="text-[8px] bg-arcade-bg text-arcade-text px-2 py-1 border border-neon-purple/40 hover:bg-neon-pink hover:text-white hover:border-pink-300 transition-colors cursor-crosshair uppercase"
                             >
-                                {skill.toUpperCase()}
+                                {skill}
                             </span>
                         ))}
                     </div>
                 </div>
 
-                {/* 8-bit Redirect Button */}
-                <div className="px-4 pb-4 mt-auto">
-                    <Link href={`/team/${member.slug}`}>
-                        <div className="w-full py-2 bg-gradient-to-b from-yellow-400 to-yellow-600 text-black text-sm text-center border-2 border-yellow-300 hover:from-red-500 hover:to-red-700 hover:text-yellow-400 transition-all font-black tracking-widest relative cursor-pointer"
-                            style={{
-                                fontFamily: '"Press Start 2P", sans-serif',
-                                boxShadow: '0 4px 0 #000, inset 0 -2px 0 rgba(0,0,0,0.3)'
-                            }}>
-                            <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent pointer-events-none" />
-                            ▶ VIEW PROFILE ◀
-                        </div>
-                    </Link>
-                </div>
+                {/* Footer */}
+                <a
+                    href={member.portfolio}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-auto block w-full py-2 bg-neon-cyan text-black font-bold text-[10px] text-center border-b-4 border-cyan-800 active:border-0 active:mt-[2px] hover:bg-cyan-400 transition-none uppercase tracking-widest"
+                >
+                    VIEW STATUS
+                </a>
+
             </div>
         </motion.div>
     );
