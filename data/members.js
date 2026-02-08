@@ -47,3 +47,16 @@ export const members = [
         image: null
     }
 ];
+
+// Helper function to create URL-friendly slug from name
+const createSlug = (name) => name.toLowerCase().replace(/\s+/g, '-');
+
+// Get all member slugs for static generation
+export const getAllMemberSlugs = () => {
+    return members.map(member => createSlug(member.name));
+};
+
+// Get a member by their slug
+export const getMemberBySlug = (slug) => {
+    return members.find(member => createSlug(member.name) === slug);
+};
