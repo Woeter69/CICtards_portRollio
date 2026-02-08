@@ -231,10 +231,10 @@ export default function FerrariSpotlightVideo({ member }) {
     const heroBlur = useTransform(smoothProgress, [0.1, 0.25], ["blur(0px)", "blur(8px)"]);
     const heroOpacity = useTransform(smoothProgress, [0.23, 0.26], [1, 0]); // Quick fade AFTER Venom covers
 
-    // Ferrari entrance animations - starts after blackout at 0.48
-    const ferrariProgress = useTransform(smoothProgress, [0.48, 1], [0, 1]);
-    const ferrariOpacity = useTransform(smoothProgress, [0.48, 0.50], [0, 1]); // Fast fade in
-    const ferrariScale = useTransform(smoothProgress, [0.48, 0.50], [0.95, 1.0]);
+    // Ferrari entrance animations - delayed to 0.52 (1s hold)
+    const ferrariProgress = useTransform(smoothProgress, [0.52, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.52, 0.54], [0, 1]); // Fast fade in
+    const ferrariScale = useTransform(smoothProgress, [0.52, 0.54], [0.95, 1.0]);
 
     // Track progress changes
     useMotionValueEvent(smoothProgress, "change", (latest) => {
@@ -243,19 +243,18 @@ export default function FerrariSpotlightVideo({ member }) {
 
     // Control video playback based on scroll
     useEffect(() => {
-        const video = videoRef.current;
-        if (!video || !isLoaded) return;
+        if (videoRef.current) {
+            // Map scroll progress (0.52-1.0) to video duration (0-100%)
+            // We use a slightly earlier start for playback to ensure it's ready
+            const relativeProgress = Math.max(0, (currentProgress - 0.52) / 0.48);
+            const targetTime = relativeProgress * VIDEO_DURATION;
 
-        const unsubscribe = ferrariProgress.on("change", (progress) => {
-            // Only update video if progress > 0 (i.e. we passed the blackout threshold)
-            if (progress > 0) {
-                const targetTime = progress * VIDEO_DURATION;
-                video.currentTime = targetTime;
+            // Only update if difference is significant to avoid jitter
+            if (Math.abs(videoRef.current.currentTime - targetTime) > 0.05) {
+                videoRef.current.currentTime = targetTime;
             }
-        });
-
-        return () => unsubscribe();
-    }, [isLoaded, ferrariProgress]);
+        }
+    }, [currentProgress, isLoaded]); // Added isLoaded to dependencies
 
     // Handle video load with multiple event listeners and fallback
     useEffect(() => {
@@ -341,7 +340,8 @@ export default function FerrariSpotlightVideo({ member }) {
                     style={{
                         zIndex: 50,
                         backgroundColor: 'rgb(37, 36, 35)',
-                        opacity: currentProgress >= 0.25 && currentProgress < 0.48 ? 1 : 0,
+                        // Extended blackout to 0.52 (was 0.48) to match delayed video start
+                        opacity: currentProgress >= 0.25 && currentProgress < 0.52 ? 1 : 0,
                         pointerEvents: 'none'
                     }}
                 />
