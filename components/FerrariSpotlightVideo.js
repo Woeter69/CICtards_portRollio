@@ -202,15 +202,15 @@ export default function FerrariSpotlightVideo({ member }) {
         restDelta: 0.001
     });
 
-    // Hero exit animations - scale, blur, and fade out after Venom takes over
+    // Hero exit animations - stays visible until Venom fully covers at 0.25
     const heroScale = useTransform(smoothProgress, [0.1, 0.25], [1, 1.3]);
     const heroBlur = useTransform(smoothProgress, [0.1, 0.25], ["blur(0px)", "blur(8px)"]);
-    const heroOpacity = useTransform(smoothProgress, [0.22, 0.28], [1, 0]); // Fade out after Venom covers
+    const heroOpacity = useTransform(smoothProgress, [0.23, 0.26], [1, 0]); // Quick fade AFTER Venom covers
 
-    // Ferrari entrance animations - starts 1 second after Venom ends (0.35 + 0.06)
-    const ferrariProgress = useTransform(smoothProgress, [0.41, 1], [0, 1]);
-    const ferrariOpacity = useTransform(smoothProgress, [0.41, 0.49], [0, 1]); // 1 sec after Venom
-    const ferrariScale = useTransform(smoothProgress, [0.41, 0.49], [0.95, 1.0]);
+    // Ferrari entrance animations - starts 1 second after Venom ends at 0.35
+    const ferrariProgress = useTransform(smoothProgress, [0.42, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.42, 0.50], [0, 1]); // After Venom gone
+    const ferrariScale = useTransform(smoothProgress, [0.42, 0.50], [0.95, 1.0]);
 
     // Track progress changes
     useMotionValueEvent(smoothProgress, "change", (latest) => {
