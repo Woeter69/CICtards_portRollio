@@ -48,8 +48,8 @@ function VenomTransition({ progress }) {
     // Transition happens between 0.1 and 0.25 scroll progress
     const transitionProgress = Math.max(0, Math.min(1, (progress - 0.1) / 0.15));
 
-    // Fade out after transition completes (0.28 to 0.35)
-    const fadeOutProgress = progress > 0.28 ? Math.min(1, (progress - 0.28) / 0.07) : 0;
+    // Fade out quickly after transition (0.25 to 0.30) - before blackout starts at 0.35
+    const fadeOutProgress = progress > 0.25 ? Math.min(1, (progress - 0.25) / 0.05) : 0;
     const venomOpacity = 1 - fadeOutProgress;
 
     if (transitionProgress <= 0 || venomOpacity <= 0) return null;
@@ -315,7 +315,7 @@ export default function FerrariSpotlightVideo({ member }) {
                     style={{
                         zIndex: 25,
                         backgroundColor: 'rgb(37, 36, 35)',
-                        opacity: currentProgress >= 0.35 && currentProgress < 0.47 ? 1 : 0,
+                        opacity: currentProgress >= 0.30 && currentProgress < 0.47 ? 1 : 0,
                         pointerEvents: 'none'
                     }}
                 />
