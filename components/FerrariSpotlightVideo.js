@@ -48,12 +48,16 @@ function VenomTransition({ progress }) {
     // Transition happens between 0.1 and 0.25 scroll progress
     const transitionProgress = Math.max(0, Math.min(1, (progress - 0.1) / 0.15));
 
-    if (transitionProgress <= 0) return null;
+    // Fade out after transition completes (0.28 to 0.35)
+    const fadeOutProgress = progress > 0.28 ? Math.min(1, (progress - 0.28) / 0.07) : 0;
+    const venomOpacity = 1 - fadeOutProgress;
+
+    if (transitionProgress <= 0 || venomOpacity <= 0) return null;
 
     return (
         <div
             className="absolute inset-0 pointer-events-none overflow-hidden"
-            style={{ zIndex: 35 }}
+            style={{ zIndex: 35, opacity: venomOpacity }}
         >
             {/* SVG Symbiotic Tendrils */}
             <svg
@@ -168,17 +172,6 @@ function VenomTransition({ progress }) {
                     }}
                 />
             ))}
-
-            {/* Full black overlay at end */}
-            {transitionProgress > 0.8 && (
-                <div
-                    className="absolute inset-0 bg-[rgb(37,36,35)]"
-                    style={{
-                        opacity: (transitionProgress - 0.8) / 0.2,
-                        transition: 'opacity 0.2s ease-out'
-                    }}
-                />
-            )}
 
             {/* CSS Animation for twinkling */}
             <style jsx>{`
