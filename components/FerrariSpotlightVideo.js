@@ -231,10 +231,10 @@ export default function FerrariSpotlightVideo({ member }) {
     const heroBlur = useTransform(smoothProgress, [0.1, 0.25], ["blur(0px)", "blur(8px)"]);
     const heroOpacity = useTransform(smoothProgress, [0.23, 0.26], [1, 0]); // Quick fade AFTER Venom covers
 
-    // Ferrari entrance animations - starts after long blackout at 0.50
-    const ferrariProgress = useTransform(smoothProgress, [0.50, 1], [0, 1]);
-    const ferrariOpacity = useTransform(smoothProgress, [0.50, 0.52], [0, 1]); // Fast fade in
-    const ferrariScale = useTransform(smoothProgress, [0.50, 0.52], [0.95, 1.0]);
+    // Ferrari entrance animations - starts after blackout at 0.48
+    const ferrariProgress = useTransform(smoothProgress, [0.48, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.48, 0.50], [0, 1]); // Fast fade in
+    const ferrariScale = useTransform(smoothProgress, [0.48, 0.50], [0.95, 1.0]);
 
     // Track progress changes
     useMotionValueEvent(smoothProgress, "change", (latest) => {
@@ -341,7 +341,7 @@ export default function FerrariSpotlightVideo({ member }) {
                     style={{
                         zIndex: 50,
                         backgroundColor: 'rgb(37, 36, 35)',
-                        opacity: currentProgress >= 0.25 && currentProgress < 0.50 ? 1 : 0,
+                        opacity: currentProgress >= 0.25 && currentProgress < 0.48 ? 1 : 0,
                         pointerEvents: 'none'
                     }}
                 />
@@ -469,8 +469,8 @@ export default function FerrariSpotlightVideo({ member }) {
 
                 {/* Transition Area (Blackout) - Don't snap here, let user scroll through */}
 
-                {/* 1. Engine (0-1s -> ~45-54%) - PRIORITY SNAP TARGET */}
-                <div className="absolute w-full" style={{ top: '45%', height: '9%', scrollSnapAlign: 'start', scrollSnapStop: 'always' }} />
+                {/* 1. Engine (0-1s -> ~49.5-54%) - PRIORITY SNAP TARGET, Early stop */}
+                <div className="absolute w-full" style={{ top: '49.5%', height: '10%', scrollSnapAlign: 'start', scrollSnapStop: 'always' }} />
 
                 {/* 2. Cockpit (4-6s -> ~58%) - Delayed slightly to prevent skipping Engine */}
                 <div className="absolute w-full" style={{ top: '58%', height: '2%', scrollSnapAlign: 'center', scrollSnapStop: 'always' }} />
