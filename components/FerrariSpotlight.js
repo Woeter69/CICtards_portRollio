@@ -5,9 +5,10 @@ import Link from "next/link";
 import CursorTrail from "./ui/CursorTrail";
 import ScratchRevealImage from "./ui/ScratchRevealImage";
 
-const TOTAL_FRAMES = 960; // Extended with fourth batch of frames (721-960)
+const TOTAL_FRAMES = 240; // New PNG frames
+const FRAME_EXTENSION = 'png'; // Changed from jpg to png
 const HERO_HEIGHT = 1000; // Hero section height
-const SCROLL_HEIGHT = 6000; // Increased for hero + Ferrari
+const SCROLL_HEIGHT = 6000; // Total scrollable height
 
 // Section 1: Only ENGINE (strengths) and COCKPIT (skills)
 const annotations = [
@@ -86,7 +87,7 @@ export default function FerrariSpotlight({ member }) {
             for (let i = 1; i <= TOTAL_FRAMES; i++) {
                 const img = new Image();
                 const frameNumber = String(i).padStart(3, '0');
-                img.src = `/ferrari/ezgif-frame-${frameNumber}.jpg`;
+                img.src = `/ferrari/ezgif-frame-${frameNumber}.${FRAME_EXTENSION}`;
 
                 img.onload = () => {
                     loaded++;
