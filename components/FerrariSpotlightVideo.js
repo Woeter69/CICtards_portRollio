@@ -470,9 +470,9 @@ export default function FerrariSpotlightVideo({ member }) {
 
                 {/* Transition Area - Don't snap here */}
 
-                {/* 1. Engine (0s) -> 48% */}
+                {/* 1. Engine (1s) -> ~49.5% */}
                 {/* Large catch area 40% - 54% to ensure it stops here first */}
-                <div className="absolute w-full" style={{ top: '40%', height: '14%', scrollSnapAlign: 'end', scrollSnapStop: 'always' }} />
+                <div className="absolute w-full" style={{ top: '49.5%', height: '14%', scrollSnapAlign: 'start', scrollSnapStop: 'always' }} />
 
                 {/* 2. Cockpit (5s) -> 5s / 36.93s * 0.52 + 0.48 ≈ 0.55 */}
                 <div className="absolute w-full" style={{ top: '55%', height: '5%', scrollSnapAlign: 'center', scrollSnapStop: 'always' }} />
