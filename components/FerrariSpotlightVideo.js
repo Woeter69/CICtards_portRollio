@@ -207,10 +207,10 @@ export default function FerrariSpotlightVideo({ member }) {
     const heroBlur = useTransform(smoothProgress, [0.1, 0.25], ["blur(0px)", "blur(8px)"]);
     const heroOpacity = useTransform(smoothProgress, [0.22, 0.28], [1, 0]); // Fade out after Venom covers
 
-    // Ferrari entrance animations - delayed by ~3.5 seconds worth of scroll
-    const ferrariProgress = useTransform(smoothProgress, [0.41, 1], [0, 1]);
-    const ferrariOpacity = useTransform(smoothProgress, [0.41, 0.49], [0, 1]); // Delayed entrance
-    const ferrariScale = useTransform(smoothProgress, [0.41, 0.49], [0.95, 1.0]);
+    // Ferrari entrance animations - delayed by ~4.5 seconds worth of scroll
+    const ferrariProgress = useTransform(smoothProgress, [0.47, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.47, 0.55], [0, 1]); // Delayed entrance
+    const ferrariScale = useTransform(smoothProgress, [0.47, 0.55], [0.95, 1.0]);
 
     // Track progress changes
     useMotionValueEvent(smoothProgress, "change", (latest) => {
