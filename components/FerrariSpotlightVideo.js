@@ -309,13 +309,13 @@ export default function FerrariSpotlightVideo({ member }) {
                     <div className="absolute top-0 left-0 right-0 h-[150px] bg-gradient-to-b from-[rgba(37,36,35,0.7)] to-transparent" />
                 </motion.div>
 
-                {/* BLACKOUT LAYER - blocks video during transition (z-25) */}
+                {/* BLACKOUT LAYER - only covers the gap between Venom end (0.35) and Ferrari start (0.42) */}
                 <div
                     className="absolute inset-0"
                     style={{
                         zIndex: 25,
                         backgroundColor: 'rgb(37, 36, 35)',
-                        opacity: currentProgress < 0.42 ? 1 : Math.max(0, 1 - (currentProgress - 0.42) / 0.08),
+                        opacity: currentProgress >= 0.28 && currentProgress < 0.42 ? 1 : 0,
                         pointerEvents: 'none'
                     }}
                 />
