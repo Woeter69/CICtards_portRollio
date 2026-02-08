@@ -207,10 +207,10 @@ export default function FerrariSpotlightVideo({ member }) {
     const heroBlur = useTransform(smoothProgress, [0.1, 0.25], ["blur(0px)", "blur(8px)"]);
     const heroOpacity = useTransform(smoothProgress, [0.23, 0.26], [1, 0]); // Quick fade AFTER Venom covers
 
-    // Ferrari entrance animations - starts after blackout at 0.41
-    const ferrariProgress = useTransform(smoothProgress, [0.41, 1], [0, 1]);
-    const ferrariOpacity = useTransform(smoothProgress, [0.41, 0.43], [0, 1]); // Fast fade in
-    const ferrariScale = useTransform(smoothProgress, [0.41, 0.43], [0.95, 1.0]);
+    // Ferrari entrance animations - starts after long blackout at 0.50
+    const ferrariProgress = useTransform(smoothProgress, [0.50, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.50, 0.52], [0, 1]); // Fast fade in
+    const ferrariScale = useTransform(smoothProgress, [0.50, 0.52], [0.95, 1.0]);
 
     // Track progress changes
     useMotionValueEvent(smoothProgress, "change", (latest) => {
@@ -223,9 +223,11 @@ export default function FerrariSpotlightVideo({ member }) {
         if (!video || !isLoaded) return;
 
         const unsubscribe = ferrariProgress.on("change", (progress) => {
-            // Map scroll progress to video time
-            const targetTime = progress * VIDEO_DURATION;
-            video.currentTime = targetTime;
+            // Only update video if progress > 0 (i.e. we passed the blackout threshold)
+            if (progress > 0) {
+                const targetTime = progress * VIDEO_DURATION;
+                video.currentTime = targetTime;
+            }
         });
 
         return () => unsubscribe();
@@ -309,13 +311,13 @@ export default function FerrariSpotlightVideo({ member }) {
                     <div className="absolute top-0 left-0 right-0 h-[150px] bg-gradient-to-b from-[rgba(37,36,35,0.7)] to-transparent" />
                 </motion.div>
 
-                {/* BLACKOUT LAYER - only covers the gap between Venom end (0.35) and Ferrari start (0.42) */}
+                {/* BLACKOUT LAYER - covers transition gap (z-50 above everything) */}
                 <div
                     className="absolute inset-0"
                     style={{
-                        zIndex: 25,
+                        zIndex: 50,
                         backgroundColor: 'rgb(37, 36, 35)',
-                        opacity: currentProgress >= 0.25 && currentProgress < 0.41 ? 1 : 0,
+                        opacity: currentProgress >= 0.25 && currentProgress < 0.50 ? 1 : 0,
                         pointerEvents: 'none'
                     }}
                 />
