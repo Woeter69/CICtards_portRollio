@@ -5,7 +5,7 @@ import Link from "next/link";
 import CursorTrail from "./ui/CursorTrail";
 import ScratchRevealImage from "./ui/ScratchRevealImage";
 
-const TOTAL_FRAMES = 480; // Doubled from 240 to include new frames
+const TOTAL_FRAMES = 720; // Extended with third batch of frames (481-720)
 const HERO_HEIGHT = 1000; // Hero section height
 const SCROLL_HEIGHT = 6000; // Increased for hero + Ferrari
 
