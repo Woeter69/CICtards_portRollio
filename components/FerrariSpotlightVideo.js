@@ -207,10 +207,10 @@ export default function FerrariSpotlightVideo({ member }) {
     const heroBlur = useTransform(smoothProgress, [0.1, 0.25], ["blur(0px)", "blur(8px)"]);
     const heroOpacity = useTransform(smoothProgress, [0.23, 0.26], [1, 0]); // Quick fade AFTER Venom covers
 
-    // Ferrari entrance animations - starts after short blackout at 0.35
-    const ferrariProgress = useTransform(smoothProgress, [0.35, 1], [0, 1]);
-    const ferrariOpacity = useTransform(smoothProgress, [0.35, 0.37], [0, 1]); // Fast fade in
-    const ferrariScale = useTransform(smoothProgress, [0.35, 0.37], [0.95, 1.0]);
+    // Ferrari entrance animations - starts after blackout at 0.41
+    const ferrariProgress = useTransform(smoothProgress, [0.41, 1], [0, 1]);
+    const ferrariOpacity = useTransform(smoothProgress, [0.41, 0.43], [0, 1]); // Fast fade in
+    const ferrariScale = useTransform(smoothProgress, [0.41, 0.43], [0.95, 1.0]);
 
     // Track progress changes
     useMotionValueEvent(smoothProgress, "change", (latest) => {
@@ -315,7 +315,7 @@ export default function FerrariSpotlightVideo({ member }) {
                     style={{
                         zIndex: 25,
                         backgroundColor: 'rgb(37, 36, 35)',
-                        opacity: currentProgress >= 0.25 && currentProgress < 0.35 ? 1 : 0,
+                        opacity: currentProgress >= 0.25 && currentProgress < 0.41 ? 1 : 0,
                         pointerEvents: 'none'
                     }}
                 />
